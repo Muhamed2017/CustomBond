@@ -1,0 +1,669 @@
+{
+  "info": {
+    "_postman_id": "custombond-api-collection-v1",
+    "name": "CustomBond API",
+    "description": "Complete Postman collection for the CustomBond application.\n\n## Setup\n1. Import `CustomBond.postman_environment.json` as your environment.\n2. Set `base_url` to match your deployment (default: `http://localhost:8075/api`).\n3. Run **DXC Auth → Login** first – the test script auto-saves the token to the `dxc_token` environment variable.\n\n## Controllers\n| Controller | Base Path | Description |\n|---|---|---|\n| DxcAuthController | `/dxc/auth` | DXC authentication (login / logout) |\n| DxcController | `/dxc/services` | Individual DXC service calls |\n| CBIssueInsurancePolicyController | `/cb/services` | CB full-cycle issuance (legacy) |\n| VendorController | `/vendor` | Async vendor pipeline – main entry point |\n\n## Vendor Pipeline Flow\nThe recommended entry point for vendors is `POST /vendor/issue`.\nThe server responds immediately with HTTP 202 and a `requestId`.\nThe configured steps execute asynchronously. Results are logged and\noptionally POSTed to your `callbackUrl`.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8075/api",
+      "type": "string",
+      "description": "Override with environment variable {{base_url}}"
+    }
+  ],
+
+  "item": [
+
+    {
+      "name": "DXC Auth",
+      "description": "Authentication endpoints. Run Login first – the test script captures the token automatically.",
+      "item": [
+
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Login status is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response contains token', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('token');",
+                  "    // Persist token for all subsequent requests",
+                  "    pm.environment.set('dxc_token', json.token);",
+                  "    console.log('Token saved:', json.token);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"UserName\": \"amalah\",\n  \"Password\": \"P@ssw0rd\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/dxc/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["dxc", "auth", "login"]
+            },
+            "description": "Authenticates with the DXC system and returns a Bearer token.\nThe test script automatically stores the token in the `dxc_token` environment variable."
+          }
+        },
+
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"{{dxc_token}}\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/dxc/auth/logout",
+              "host": ["{{base_url}}"],
+              "path": ["dxc", "auth", "logout"]
+            },
+            "description": "Invalidates the current DXC session token."
+          }
+        }
+
+      ]
+    },
+
+    {
+      "name": "DXC Services",
+      "description": "Individual DXC service endpoints – each maps directly to one external DXC API call.\nAll requests require the DXC token (auto-set by the Login request).",
+      "item": [
+
+        {
+          "name": "Check Black Listed",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"callSequance\": \"FIRST_CALL\",\n  \"stakeholderName\": \"Acme Corporation\",\n  \"sectorType\": \"PRIVATE\",\n  \"vendorId\": \"{{vendor_id}}\",\n  \"taxId\": \"123456789\",\n  \"nationalId\": null,\n  \"contactKey\": null,\n  \"commercialRegNo\": \"CR-2024-001\",\n  \"address\": \"123 Business District, Cairo\",\n  \"phone\": \"+201234567890\",\n  \"email\": \"contact@acme.com\",\n  \"legalRepName\": \"Mohammed Ahmed\",\n  \"legalRepNationalId\": \"12345678901234\",\n  \"vendorRequestId\": \"{{vendor_request_id}}\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/dxc/services/checkBlackListed",
+              "host": ["{{base_url}}"],
+              "path": ["dxc", "services", "checkBlackListed"]
+            },
+            "description": "Checks whether a stakeholder (identified by taxId, nationalId, or contactKey) is blacklisted.\n\n**callSequance values:** `FIRST_CALL` | `SECOND_CALL`\n**sectorType values:** `PRIVATE` | `PUBLIC`\n\nAt least one of `taxId`, `nationalId`, or `contactKey` is required.\n\n**Response status field:** `APPROVED` | `REJECTED`"
+          }
+        },
+
+        {
+          "name": "Check Black Listed (by National ID)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"callSequance\": \"FIRST_CALL\",\n  \"stakeholderName\": \"Ahmed Mohammed\",\n  \"sectorType\": \"PRIVATE\",\n  \"vendorId\": \"{{vendor_id}}\",\n  \"taxId\": null,\n  \"nationalId\": \"12345678901234\",\n  \"contactKey\": null,\n  \"vendorRequestId\": \"{{vendor_request_id}}\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/dxc/services/checkBlackListed",
+              "host": ["{{base_url}}"],
+              "path": ["dxc", "services", "checkBlackListed"]
+            },
+            "description": "Variant: identify the stakeholder by `nationalId` (14-digit Egyptian national ID)."
+          }
+        },
+
+        {
+          "name": "Check Black Listed (by Contact Key)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"callSequance\": \"FIRST_CALL\",\n  \"stakeholderName\": \"Acme Corporation\",\n  \"sectorType\": \"PRIVATE\",\n  \"vendorId\": \"{{vendor_id}}\",\n  \"taxId\": null,\n  \"nationalId\": null,\n  \"contactKey\": 98765,\n  \"vendorRequestId\": \"{{vendor_request_id}}\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/dxc/services/checkBlackListed",
+              "host": ["{{base_url}}"],
+              "path": ["dxc", "services", "checkBlackListed"]
+            },
+            "description": "Variant: identify the stakeholder by DXC `contactKey` (integer)."
+          }
+        },
+
+        {
+          "name": "Quote Preparation",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Quote preparation status is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response contains policyNo and policyKey', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "    pm.expect(json.data).to.have.property('policyNo');",
+                  "    pm.expect(json.data).to.have.property('policyKey');",
+                  "    // Save for use in Issue Quote and Issue Policy",
+                  "    pm.environment.set('policy_no', json.data.policyNo);",
+                  "    pm.environment.set('policy_key', json.data.policyKey);",
+                  "    console.log('policyNo:', json.data.policyNo, ' | policyKey:', json.data.policyKey);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"effectiveDate\": \"2024-07-01\",\n  \"expiryDate\": \"2025-07-01\",\n  \"currency\": 818,\n  \"division\": 1001,\n  \"subDivision\": 2001,\n  \"insured\": 12345,\n  \"underWriterContactKey\": 67890,\n  \"mop\": 1,\n  \"producer\": 100,\n  \"maximumExposure\": 500000,\n  \"product\": 3001,\n  \"hazardLevel\": 2,\n  \"policyName\": 5,\n  \"contactTPA\": 200,\n  \"gracePeriodDays\": 30,\n  \"marketSourceKey\": 10,\n  \"usePerecntageInBeneficiary\": false,\n  \"benficiaries\": [\n    {\n      \"contactId\": 11111,\n      \"limit\": 100000,\n      \"currency\": 818,\n      \"sharePercentage\": 100,\n      \"print\": true\n    }\n  ],\n  \"additionalInsureds\": [\n    {\n      \"contactId\": 22222,\n      \"limit\": 50000,\n      \"currency\": 818\n    }\n  ]\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/dxc/services/quotePrepration",
+              "host": ["{{base_url}}"],
+              "path": ["dxc", "services", "quotePrepration"]
+            },
+            "description": "Prepares a new policy quote. Returns `policyNo` and `policyKey`.\n\nThe test script auto-saves both values to environment variables for downstream calls.\n\n**Response shape:**\n```json\n{\n  \"success\": true,\n  \"message\": \"Policy issued successfully\",\n  \"data\": {\n    \"policyKey\": 12345,\n    \"policyNo\": \"POL-2024-001\"\n  }\n}\n```\n\n**Note:** `currency` uses ISO 4217 numeric codes (818 = EGP)."
+          }
+        },
+
+        {
+          "name": "Issue Quote",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"policyNo\": \"{{policy_no}}\",\n  \"parentRequestId\": \"{{parent_request_id}}\",\n  \"vendorId\": \"{{vendor_id}}\",\n  \"vendorRequestId\": \"{{vendor_request_id}}\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/dxc/services/issueQuote",
+              "host": ["{{base_url}}"],
+              "path": ["dxc", "services", "issueQuote"]
+            },
+            "description": "Issues the quote for a policy that was prepared via Quote Preparation.\n\n**Prerequisites:** Run Quote Preparation first – the test script saves `{{policy_no}}`.\n\n`parentRequestId` links all log entries for a single issuance flow."
+          }
+        },
+
+        {
+          "name": "Issue Policy",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"policyNo\": \"{{policy_no}}\",\n  \"parentRequestId\": \"{{parent_request_id}}\",\n  \"vendorId\": \"{{vendor_id}}\",\n  \"vendorRequestId\": \"{{vendor_request_id}}\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/dxc/services/issuePolicy",
+              "host": ["{{base_url}}"],
+              "path": ["dxc", "services", "issuePolicy"]
+            },
+            "description": "Finalises and issues the insurance policy.\n\n**Prerequisites:** Run Issue Quote first.\n\nThis is the third and final step of the DXC policy lifecycle."
+          }
+        },
+
+        {
+          "name": "Upload Document",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "File",
+                  "type": "file",
+                  "src": "",
+                  "description": "The document binary to upload (PDF, PNG, JPG, etc.)"
+                },
+                {
+                  "key": "Data",
+                  "type": "text",
+                  "value": "{\n  \"entityKey\": 10,\n  \"instnceKey\": {{policy_key}},\n  \"documentType\": 3,\n  \"vendorRequestId\": \"{{vendor_request_id}}\",\n  \"vendorId\": \"{{vendor_id}}\",\n  \"parentRequestId\": \"{{parent_request_id}}\"\n}",
+                  "contentType": "application/json",
+                  "description": "Upload metadata as a JSON string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/dxc/services/upload",
+              "host": ["{{base_url}}"],
+              "path": ["dxc", "services", "upload"]
+            },
+            "description": "Uploads a document and attaches it to a policy.\n\n**Multipart form fields:**\n- `File` – the document binary\n- `Data` – JSON string with upload metadata (Content-Type: application/json)\n\n`instnceKey` corresponds to the `policyKey` returned by Quote Preparation.\n\n`documentType` is a DXC reference code for the document category."
+          }
+        },
+
+        {
+          "name": "Get Document",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"requestId\": \"{{parent_request_id}}\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/dxc/services/getDocument",
+              "host": ["{{base_url}}"],
+              "path": ["dxc", "services", "getDocument"]
+            },
+            "description": "Retrieves a previously uploaded document from the database by its upload `requestId`.\n\n`requestId` is the UUID logged during the Upload Document call."
+          }
+        },
+
+        {
+          "name": "Get Contact (by Tax ID)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"callSequance\": \"FIRST_CALL\",\n  \"vendorId\": \"{{vendor_id}}\",\n  \"taxId\": \"123456789\",\n  \"nationalId\": null,\n  \"contactKey\": null,\n  \"vendorRequestId\": \"{{vendor_request_id}}\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/dxc/services/getContact",
+              "host": ["{{base_url}}"],
+              "path": ["dxc", "services", "getContact"]
+            },
+            "description": "Retrieves a DXC contact record by Tax ID.\n\nProvide exactly one of `taxId`, `nationalId`, or `contactKey`."
+          }
+        },
+
+        {
+          "name": "Get Contact (by National ID)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"callSequance\": \"FIRST_CALL\",\n  \"vendorId\": \"{{vendor_id}}\",\n  \"taxId\": null,\n  \"nationalId\": \"12345678901234\",\n  \"contactKey\": null,\n  \"vendorRequestId\": \"{{vendor_request_id}}\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/dxc/services/getContact",
+              "host": ["{{base_url}}"],
+              "path": ["dxc", "services", "getContact"]
+            },
+            "description": "Retrieves a DXC contact record by 14-digit Egyptian National ID."
+          }
+        },
+
+        {
+          "name": "Get Contact (by Contact Key)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"callSequance\": \"FIRST_CALL\",\n  \"vendorId\": \"{{vendor_id}}\",\n  \"taxId\": null,\n  \"nationalId\": null,\n  \"contactKey\": 98765,\n  \"vendorRequestId\": \"{{vendor_request_id}}\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/dxc/services/getContact",
+              "host": ["{{base_url}}"],
+              "path": ["dxc", "services", "getContact"]
+            },
+            "description": "Retrieves a DXC contact record by its integer contact key."
+          }
+        },
+
+        {
+          "name": "Create Contact (Individual)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"callSequance\": \"FIRST_CALL\",\n  \"vendorId\": \"{{vendor_id}}\",\n  \"vendorRequestId\": \"{{vendor_request_id}}\",\n  \"NafazaRequestId\": null,\n  \"parentRequestId\": \"{{parent_request_id}}\",\n  \"individualContactData\": {\n    \"surname\": \"Ahmed\",\n    \"forename\": \"Mohammed\",\n    \"gender\": 1,\n    \"title\": 1,\n    \"maritalStatus\": 1,\n    \"jobTitle\": 5,\n    \"nationalID\": \"12345678901234\",\n    \"typeOfTax\": 1,\n    \"sector\": 1,\n    \"mobilePhone\": \"+201234567890\",\n    \"email\": \"m.ahmed@example.com\",\n    \"address1\": \"Flat 10, Building 5\",\n    \"address2\": \"Nasr City\",\n    \"city\": \"Cairo\",\n    \"state\": 1,\n    \"country\": 818,\n    \"drivingLicenseNumber\": null,\n    \"roles\": [\n      { \"role\": 1 }\n    ]\n  }\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/dxc/services/createContact",
+              "host": ["{{base_url}}"],
+              "path": ["dxc", "services", "createContact"]
+            },
+            "description": "Creates a new individual (person) contact in the DXC system.\n\nSet `individualContactData` and leave `organizationContactData` null.\n\nCommon `country` values: 818 = Egypt.\nCommon `gender` values: 1 = Male, 2 = Female."
+          }
+        },
+
+        {
+          "name": "Create Contact (Organization)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"callSequance\": \"FIRST_CALL\",\n  \"vendorId\": \"{{vendor_id}}\",\n  \"vendorRequestId\": \"{{vendor_request_id}}\",\n  \"NafazaRequestId\": null,\n  \"parentRequestId\": \"{{parent_request_id}}\",\n  \"organizationContactData\": {\n    \"companyName\": \"Acme Corporation\",\n    \"taxCardId\": \"123456789\",\n    \"commercialRegID\": \"CR-2024-001\",\n    \"typeOfTax\": 1,\n    \"sector\": 2,\n    \"country\": 818,\n    \"mobilePhone\": \"+20212345678\",\n    \"email\": \"info@acme.com\",\n    \"address1\": \"456 Business Tower\",\n    \"address2\": \"Downtown Cairo\",\n    \"city\": \"Cairo\",\n    \"state\": 1,\n    \"niprNumber\": null,\n    \"niprExpirationDate\": null,\n    \"roles\": [\n      { \"role\": 2 }\n    ]\n  }\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/dxc/services/createContact",
+              "host": ["{{base_url}}"],
+              "path": ["dxc", "services", "createContact"]
+            },
+            "description": "Creates a new organization (company) contact in the DXC system.\n\nSet `organizationContactData` and leave `individualContactData` null.\n\n`taxCardId` must be a valid 9-digit Egyptian Tax Registration Number."
+          }
+        }
+
+      ]
+    },
+
+    {
+      "name": "CB Services (Legacy Full Cycle)",
+      "description": "CBIssueInsurancePolicyController – legacy endpoint that triggers the full CB policy issuance cycle asynchronously. Replaced by the more flexible Vendor Pipeline API (`/vendor/issue`).",
+      "item": [
+
+        {
+          "name": "Issue Policy Full Cycle",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "",
+                  "description": "Supporting document binary (required)"
+                },
+                {
+                  "key": "data",
+                  "type": "text",
+                  "value": "{\n  \"stakeholder\": {\n    \"stakeholderName\": \"Acme Corporation\",\n    \"sectorType\": \"PRIVATE\",\n    \"taxId\": \"123456789\",\n    \"contactKey\": null,\n    \"commercialRegNo\": \"CR-2024-001\",\n    \"address\": \"123 Main St, Cairo\",\n    \"phone\": \"+201234567890\",\n    \"email\": \"contact@acme.com\",\n    \"legalRepName\": \"Mohammed Ahmed\",\n    \"legalRepNationalId\": \"12345678901234\"\n  },\n  \"effectiveDate\": \"2024-07-01\",\n  \"expiryDate\": \"2025-07-01\",\n  \"currency\": 818,\n  \"division\": 1001,\n  \"subDivision\": 2001,\n  \"insured\": 12345,\n  \"underWriterContactKey\": 67890,\n  \"mop\": 1,\n  \"producer\": 100,\n  \"product\": 3001,\n  \"hazardLevel\": 2,\n  \"gracePeriodDays\": 30,\n  \"marketSourceKey\": 10,\n  \"usePerecntageInBeneficiary\": false,\n  \"benficiaries\": [\n    {\n      \"contactId\": 11111,\n      \"limit\": 100000,\n      \"currency\": 818,\n      \"sharePercentage\": 100,\n      \"print\": true\n    }\n  ],\n  \"additionalInsureds\": [\n    {\n      \"contactId\": 22222,\n      \"limit\": 50000,\n      \"currency\": 818\n    }\n  ]\n}",
+                  "contentType": "application/json",
+                  "description": "CB_IssuePolicyRequest JSON"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/cb/services/policies",
+              "host": ["{{base_url}}"],
+              "path": ["cb", "services", "policies"]
+            },
+            "description": "Triggers a full asynchronous CB issuance cycle including black-list check.\nReturns a response immediately with `nafezaInsuranceRequestId`, `requestId`, and `acceptedAt`.\n\n**Deprecated in favour of** `POST /vendor/issue` which supports per-vendor step configuration."
+          }
+        }
+
+      ]
+    },
+
+    {
+      "name": "Vendor Pipeline API",
+      "description": "Main entry point for vendor-initiated issuance flows.\n\n`POST /vendor/issue` accepts the request as `multipart/form-data`:\n- Part **`data`** (Content-Type: application/json) – the `VendorIssuanceRequest` JSON\n- Part **`file`** (optional binary) – required only when `UPLOAD_DOCUMENT` is in the `steps` list\n\nThe server responds immediately with HTTP **202 Accepted** and a `requestId` (UUID).\nThe configured pipeline steps then execute **asynchronously** on the server.\n\n### Available step types\n| Step | Requires block | Requires file |\n|---|---|---|\n| `CHECK_BLACK_LIST` | `blackList` | No |\n| `QUOTE_PREPARATION` | `quotePreparation` | No |\n| `UPLOAD_DOCUMENT` | `upload` | **Yes** |\n| `ISSUE_QUOTE` | – (uses context policyNo) | No |\n| `ISSUE_POLICY` | – (uses context policyNo) | No |\n\nFor `ISSUE_QUOTE` / `ISSUE_POLICY` without a preceding `QUOTE_PREPARATION`, supply `policyNo` at the top level.\n\nFor `UPLOAD_DOCUMENT` without a preceding `QUOTE_PREPARATION`, supply `upload.instnceKey` explicitly.",
+      "item": [
+
+        {
+          "name": "Issue – Full Pipeline (all 5 steps)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Response is 202 Accepted', function () {",
+                  "    pm.response.to.have.status(202);",
+                  "});",
+                  "",
+                  "pm.test('Acknowledgement contains requestId', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('requestId');",
+                  "    pm.expect(json.requestId).to.be.a('string').and.not.empty;",
+                  "    // Save for later correlation",
+                  "    pm.environment.set('parent_request_id', json.requestId);",
+                  "    console.log('Pipeline requestId:', json.requestId);",
+                  "});",
+                  "",
+                  "pm.test('Steps list is echoed back', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.steps).to.be.an('array').with.lengthOf(5);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data",
+                  "type": "text",
+                  "value": "{\n  \"vendorId\": \"{{vendor_id}}\",\n  \"vendorRequestId\": \"{{vendor_request_id}}\",\n  \"callbackUrl\": \"https://vendor.example.com/webhook/result\",\n  \"steps\": [\n    \"CHECK_BLACK_LIST\",\n    \"QUOTE_PREPARATION\",\n    \"UPLOAD_DOCUMENT\",\n    \"ISSUE_QUOTE\",\n    \"ISSUE_POLICY\"\n  ],\n  \"blackList\": {\n    \"stakeholderName\": \"Acme Corporation\",\n    \"sectorType\": \"PRIVATE\",\n    \"taxId\": \"123456789\",\n    \"nationalId\": null,\n    \"contactKey\": null,\n    \"commercialRegNo\": \"CR-2024-001\",\n    \"address\": \"123 Business District, Cairo\",\n    \"phone\": \"+201234567890\",\n    \"email\": \"contact@acme.com\",\n    \"legalRepName\": \"Mohammed Ahmed\",\n    \"legalRepNationalId\": \"12345678901234\"\n  },\n  \"quotePreparation\": {\n    \"effectiveDate\": \"2024-07-01\",\n    \"expiryDate\": \"2025-07-01\",\n    \"currency\": 818,\n    \"division\": 1001,\n    \"subDivision\": 2001,\n    \"insured\": 12345,\n    \"underWriterContactKey\": 67890,\n    \"mop\": 1,\n    \"producer\": 100,\n    \"maximumExposure\": 500000,\n    \"product\": 3001,\n    \"hazardLevel\": 2,\n    \"policyName\": 5,\n    \"contactTPA\": 200,\n    \"gracePeriodDays\": 30,\n    \"marketSourceKey\": 10,\n    \"usePerecntageInBeneficiary\": false,\n    \"benficiaries\": [\n      {\n        \"contactId\": 11111,\n        \"limit\": 100000,\n        \"currency\": 818,\n        \"sharePercentage\": 100,\n        \"print\": true\n      }\n    ],\n    \"additionalInsureds\": [\n      {\n        \"contactId\": 22222,\n        \"limit\": 50000,\n        \"currency\": 818\n      }\n    ]\n  },\n  \"upload\": {\n    \"entityKey\": 10,\n    \"documentType\": 3,\n    \"instnceKey\": null\n  }\n}",
+                  "contentType": "application/json",
+                  "description": "VendorIssuanceRequest – full pipeline with all 5 steps"
+                },
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "",
+                  "description": "Document binary (required because UPLOAD_DOCUMENT is in the steps list)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/vendor/issue",
+              "host": ["{{base_url}}"],
+              "path": ["vendor", "issue"]
+            },
+            "description": "Runs all 5 steps in sequence:\n1. CHECK_BLACK_LIST\n2. QUOTE_PREPARATION (produces policyNo + policyKey)\n3. UPLOAD_DOCUMENT (uses policyKey from step 2; `upload.instnceKey` is null so it's auto-resolved)\n4. ISSUE_QUOTE (uses policyNo from step 2)\n5. ISSUE_POLICY (uses policyNo from step 2)\n\nThe test script saves the returned `requestId` to `{{parent_request_id}}`.\n\n**Important:** Attach a real document file in the `file` part before sending."
+          }
+        },
+
+        {
+          "name": "Issue – Quote + Issue Quote + Issue Policy (no document)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Response is 202 Accepted', function () {",
+                  "    pm.response.to.have.status(202);",
+                  "});",
+                  "pm.test('Acknowledgement contains requestId', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.environment.set('parent_request_id', json.requestId);",
+                  "    console.log('Pipeline requestId:', json.requestId);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data",
+                  "type": "text",
+                  "value": "{\n  \"vendorId\": \"{{vendor_id}}\",\n  \"vendorRequestId\": \"{{vendor_request_id}}\",\n  \"steps\": [\n    \"QUOTE_PREPARATION\",\n    \"ISSUE_QUOTE\",\n    \"ISSUE_POLICY\"\n  ],\n  \"quotePreparation\": {\n    \"effectiveDate\": \"2024-07-01\",\n    \"expiryDate\": \"2025-07-01\",\n    \"currency\": 818,\n    \"division\": 1001,\n    \"subDivision\": 2001,\n    \"insured\": 12345,\n    \"underWriterContactKey\": 67890,\n    \"mop\": 1,\n    \"producer\": 100,\n    \"maximumExposure\": 500000,\n    \"product\": 3001,\n    \"hazardLevel\": 2,\n    \"policyName\": 5,\n    \"contactTPA\": 200,\n    \"gracePeriodDays\": 30,\n    \"marketSourceKey\": 10,\n    \"usePerecntageInBeneficiary\": false,\n    \"benficiaries\": [\n      {\n        \"contactId\": 11111,\n        \"limit\": 100000,\n        \"currency\": 818,\n        \"sharePercentage\": 100,\n        \"print\": true\n      }\n    ],\n    \"additionalInsureds\": [\n      {\n        \"contactId\": 22222,\n        \"limit\": 50000,\n        \"currency\": 818\n      }\n    ]\n  }\n}",
+                  "contentType": "application/json",
+                  "description": "3-step pipeline: prepare quote → issue quote → issue policy"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/vendor/issue",
+              "host": ["{{base_url}}"],
+              "path": ["vendor", "issue"]
+            },
+            "description": "Vendor subset: Quote Preparation → Issue Quote → Issue Policy.\nNo file needed (UPLOAD_DOCUMENT is excluded).\nNo blackList check (CHECK_BLACK_LIST is excluded)."
+          }
+        },
+
+        {
+          "name": "Issue – Black List + Issue Policy (pre-known policyNo)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data",
+                  "type": "text",
+                  "value": "{\n  \"vendorId\": \"{{vendor_id}}\",\n  \"vendorRequestId\": \"{{vendor_request_id}}\",\n  \"steps\": [\n    \"CHECK_BLACK_LIST\",\n    \"ISSUE_POLICY\"\n  ],\n  \"policyNo\": \"{{policy_no}}\",\n  \"blackList\": {\n    \"stakeholderName\": \"Acme Corporation\",\n    \"sectorType\": \"PRIVATE\",\n    \"taxId\": \"123456789\"\n  }\n}",
+                  "contentType": "application/json",
+                  "description": "2-step pipeline: check blacklist then issue a pre-prepared policy"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/vendor/issue",
+              "host": ["{{base_url}}"],
+              "path": ["vendor", "issue"]
+            },
+            "description": "Vendor subset: only CHECK_BLACK_LIST + ISSUE_POLICY.\nNo QUOTE_PREPARATION – the vendor supplies `policyNo` directly at the top level.\nNo document upload."
+          }
+        },
+
+        {
+          "name": "Issue – Issue Quote + Issue Policy (policyNo already known)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data",
+                  "type": "text",
+                  "value": "{\n  \"vendorId\": \"{{vendor_id}}\",\n  \"vendorRequestId\": \"{{vendor_request_id}}\",\n  \"steps\": [\n    \"ISSUE_QUOTE\",\n    \"ISSUE_POLICY\"\n  ],\n  \"policyNo\": \"{{policy_no}}\"\n}",
+                  "contentType": "application/json",
+                  "description": "Minimal 2-step pipeline when policyNo is already available"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/vendor/issue",
+              "host": ["{{base_url}}"],
+              "path": ["vendor", "issue"]
+            },
+            "description": "Vendor already has a `policyNo` (e.g. Quote Preparation was done externally).\nOnly Issue Quote and Issue Policy need to run."
+          }
+        },
+
+        {
+          "name": "Issue – Upload Document Only (pre-known policyKey)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data",
+                  "type": "text",
+                  "value": "{\n  \"vendorId\": \"{{vendor_id}}\",\n  \"vendorRequestId\": \"{{vendor_request_id}}\",\n  \"steps\": [\n    \"UPLOAD_DOCUMENT\"\n  ],\n  \"upload\": {\n    \"entityKey\": 10,\n    \"documentType\": 3,\n    \"instnceKey\": {{policy_key}}\n  }\n}",
+                  "contentType": "application/json",
+                  "description": "Single-step pipeline: upload a document to an existing policy"
+                },
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "",
+                  "description": "Document binary (required for UPLOAD_DOCUMENT)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/vendor/issue",
+              "host": ["{{base_url}}"],
+              "path": ["vendor", "issue"]
+            },
+            "description": "Single-step pipeline for uploading a document to an existing policy.\n`upload.instnceKey` is supplied explicitly because QUOTE_PREPARATION is not in the pipeline.\n\nAttach the document binary in the `file` part."
+          }
+        },
+
+        {
+          "name": "Issue – Check Black List Only",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data",
+                  "type": "text",
+                  "value": "{\n  \"vendorId\": \"{{vendor_id}}\",\n  \"vendorRequestId\": \"{{vendor_request_id}}\",\n  \"steps\": [\n    \"CHECK_BLACK_LIST\"\n  ],\n  \"blackList\": {\n    \"stakeholderName\": \"Acme Corporation\",\n    \"sectorType\": \"PRIVATE\",\n    \"taxId\": \"123456789\"\n  }\n}",
+                  "contentType": "application/json",
+                  "description": "Single-step pipeline: only perform a blacklist check"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/vendor/issue",
+              "host": ["{{base_url}}"],
+              "path": ["vendor", "issue"]
+            },
+            "description": "Single-step pipeline – useful for vendors that only need the black-list check and handle the rest of the flow themselves."
+          }
+        }
+
+      ]
+    }
+
+  ]
+}
