@@ -20,7 +20,8 @@ public class SecurityConfig {
             "/actuator/info",
             "/dxc/services/**",
             "/dxc/auth/**",
-            "/cb/services/**"
+            "/cb/services/**",
+            "/vendor/**"
     };
 
     @Bean
