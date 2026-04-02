@@ -1,0 +1,96 @@
+server:
+  port: 8075
+  servlet:
+    context-path: /api
+  error:
+    include-message: always
+    include-binding-errors: always
+
+spring:
+  application:
+    name: CustomBond
+  profiles:
+    active: dev
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: UTC
+    serialization:
+      write-dates-as-timestamps: false
+    deserialization:
+      fail-on-unknown-properties: false
+  security:
+    user:
+      name: admin
+      password: admin123
+  datasource:
+    url: jdbc:sqlserver://10.65.183.210:1433;databaseName=MIC_CB;encrypt=true;trustServerCertificate=true;
+    username: a.ashraf
+    password: ashraf3110
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  jpa:
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.SQLServerDialect  
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+  info:
+    env:
+      enabled: true
+
+info:
+  app:
+    name: CustomBond
+    description: CustomBond Professional Spring Boot Application
+    version: 1.0.0
+
+logging:
+  level:
+    com.custombond: DEBUG
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/custombond.log
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+    tagsSorter: alpha
+  info:
+    title: CustomBond API
+    description: CustomBond REST API Documentation
+    version: v1.0.0
+
+app:
+  external:
+    dxc-url: http://10.65.181.18:9068/api/v1
+    login-url: ${app.external.dxc-url}/Auth/Login
+    logout-url: ${app.external.dxc-url}/Auth/Logout
+    upload-url: ${app.external.dxc-url}/Document
+    getcontact-taxid-url: ${app.external.dxc-url}/Contact/by-tax-id/
+    getcontact-nationalid-url: ${app.external.dxc-url}/Contact/by-national-id/
+    getcontact-contact-url: ${app.external.dxc-url}/Contact/
+    create_contact-individual-url: ${app.external.dxc-url}/Contact/Individual
+    create_contact-organizaion-url: ${app.external.dxc-url}/Contact/Organizaion
+    issuequote-url: ${app.external.dxc-url}/Policy/IssueQoute/
+    issuepolicy-url: ${app.external.dxc-url}/Policy/IssuePolicy/
+    quoteprepare-url: ${app.external.dxc-url}/Policy/QuotePreparation/
+    username: amalah
+    password: P@ssw0rd
+

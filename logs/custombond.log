@@ -1,0 +1,31 @@
+2026-04-01 10:56:39 [restartedMain] INFO  c.custombond.CustomBondApplication - Starting CustomBondApplication using Java 17.0.9 with PID 22900 (D:\Work\Finals\Backend\CustomBond\CustomBond\target\classes started by 081786 in D:\Work\Finals\Backend\CustomBond\CustomBond)
+2026-04-01 10:56:39 [restartedMain] DEBUG c.custombond.CustomBondApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2026-04-01 10:56:39 [restartedMain] INFO  c.custombond.CustomBondApplication - The following 1 profile is active: "dev"
+2026-04-01 10:56:39 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-04-01 10:56:39 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-04-01 10:56:40 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-01 10:56:40 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 41 ms. Found 2 JPA repository interfaces.
+2026-04-01 10:56:41 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8075 (http)
+2026-04-01 10:56:41 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-01 10:56:41 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2026-04-01 10:56:41 [restartedMain] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2026-04-01 10:56:41 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2315 ms
+2026-04-01 10:56:42 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-01 10:56:42 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-04-01 10:56:42 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-04-01 10:56:42 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-01 10:56:42 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-04-01 10:56:42 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection ConnectionID:1 ClientConnectionId: c2241e6a-f4b7-470d-8cbe-1a5920ac315f
+2026-04-01 10:56:42 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-04-01 10:56:42 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: SQLServerDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-01 10:56:43 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-01 10:56:43 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-01 10:56:43 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-01 10:56:44 [restartedMain] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoint(s) beneath base path '/actuator'
+2026-04-01 10:56:44 [restartedMain] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@6e6ab95d, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@685edb27, org.springframework.security.web.context.SecurityContextHolderFilter@732309ae, org.springframework.security.web.header.HeaderWriterFilter@5de586cc, org.springframework.web.filter.CorsFilter@452fb6a0, org.springframework.security.web.authentication.logout.LogoutFilter@5f5d44c9, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@40b82fa6, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3a28be13, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@3bf6a90d, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@59ed86f2, org.springframework.security.web.session.SessionManagementFilter@7f708832, org.springframework.security.web.access.ExceptionTranslationFilter@1c6c896f, org.springframework.security.web.access.intercept.AuthorizationFilter@4d1a4af1]
+2026-04-01 10:56:44 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2026-04-01 10:56:44 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8075 (http) with context path '/api'
+2026-04-01 10:56:44 [restartedMain] INFO  c.custombond.CustomBondApplication - Started CustomBondApplication in 5.766 seconds (process running for 6.112)
+2026-04-01 10:56:47 [http-nio-8075-exec-2] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-01 10:56:47 [http-nio-8075-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-04-01 10:56:47 [http-nio-8075-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
