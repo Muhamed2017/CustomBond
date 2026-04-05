@@ -79,6 +79,7 @@ springdoc:
 
 app:
   external:
+    email-service-url: http://10.65.192.110:8065/email/send
     dxc-url: http://10.65.181.18:9068/api/v1
     login-url: ${app.external.dxc-url}/Auth/Login
     logout-url: ${app.external.dxc-url}/Auth/Logout

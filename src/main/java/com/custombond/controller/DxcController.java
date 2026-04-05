@@ -1,6 +1,7 @@
 package com.custombond.controller;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -27,7 +28,6 @@ import com.custombond.service.DXC_GetContact_Service;
 import com.custombond.service.DXC_IssuePolicy_Service;
 import com.custombond.service.DXC_IssueQuote_Service;
 import com.custombond.service.DXC_UploadDocument_Service;
-
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -104,8 +104,9 @@ public class DxcController {
     public ResponseEntity<ApiResponse<DXCQuotePreparationResponse>> quotePreparation(
             @Valid @RequestBody DXCQuotePreparationRequest request) {
 
-        // log.info("Received policy issuance request: insured={}, product={}, division={}",
-        //         request.getInsured(), request.getProduct(), request.getDivision());
+        // log.info("Received policy issuance request: insured={}, product={},
+        // division={}",
+        // request.getInsured(), request.getProduct(), request.getDivision());
 
         DXCQuotePreparationResponse response = policyIssuanceService.quotePrepare(request);
 
@@ -122,6 +123,13 @@ public class DxcController {
     @PostMapping("/createContact")
     public ResponseEntity<?> createContact(@RequestBody CreateContactRequest Request) {
         return DXC_Create_Contact_service.createContact(Request);
+    }
+
+    // upload one document to specefic policy by policy key
+    @PostMapping(value = "/uploadDocuments", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> uploadDocuments(@RequestPart("File") List<MultipartFile> files, @RequestPart("Data") String data)
+            throws IOException {
+        return DXC_UploadDocument_service.uploadDocuments(files, data);
     }
 
 }

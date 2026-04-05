@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CB_IssueInsurancePolicyResponse {
+public class CB_AsyncResponse {
     String nafezaInsuranceRequestId;
     String requestId;
     LocalDateTime acceptedAt;

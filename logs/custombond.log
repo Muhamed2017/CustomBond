@@ -1,31 +1,442 @@
-2026-04-01 10:56:39 [restartedMain] INFO  c.custombond.CustomBondApplication - Starting CustomBondApplication using Java 17.0.9 with PID 22900 (D:\Work\Finals\Backend\CustomBond\CustomBond\target\classes started by 081786 in D:\Work\Finals\Backend\CustomBond\CustomBond)
-2026-04-01 10:56:39 [restartedMain] DEBUG c.custombond.CustomBondApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
-2026-04-01 10:56:39 [restartedMain] INFO  c.custombond.CustomBondApplication - The following 1 profile is active: "dev"
-2026-04-01 10:56:39 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
-2026-04-01 10:56:39 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
-2026-04-01 10:56:40 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2026-04-01 10:56:40 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 41 ms. Found 2 JPA repository interfaces.
-2026-04-01 10:56:41 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8075 (http)
-2026-04-01 10:56:41 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
-2026-04-01 10:56:41 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
-2026-04-01 10:56:41 [restartedMain] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
-2026-04-01 10:56:41 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2315 ms
-2026-04-01 10:56:42 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
-2026-04-01 10:56:42 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
-2026-04-01 10:56:42 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
-2026-04-01 10:56:42 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
-2026-04-01 10:56:42 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
-2026-04-01 10:56:42 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection ConnectionID:1 ClientConnectionId: c2241e6a-f4b7-470d-8cbe-1a5920ac315f
-2026-04-01 10:56:42 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
-2026-04-01 10:56:42 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: SQLServerDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2026-04-01 10:56:43 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2026-04-01 10:56:43 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
-2026-04-01 10:56:43 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2026-04-01 10:56:44 [restartedMain] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoint(s) beneath base path '/actuator'
-2026-04-01 10:56:44 [restartedMain] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@6e6ab95d, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@685edb27, org.springframework.security.web.context.SecurityContextHolderFilter@732309ae, org.springframework.security.web.header.HeaderWriterFilter@5de586cc, org.springframework.web.filter.CorsFilter@452fb6a0, org.springframework.security.web.authentication.logout.LogoutFilter@5f5d44c9, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@40b82fa6, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3a28be13, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@3bf6a90d, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@59ed86f2, org.springframework.security.web.session.SessionManagementFilter@7f708832, org.springframework.security.web.access.ExceptionTranslationFilter@1c6c896f, org.springframework.security.web.access.intercept.AuthorizationFilter@4d1a4af1]
-2026-04-01 10:56:44 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
-2026-04-01 10:56:44 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8075 (http) with context path '/api'
-2026-04-01 10:56:44 [restartedMain] INFO  c.custombond.CustomBondApplication - Started CustomBondApplication in 5.766 seconds (process running for 6.112)
-2026-04-01 10:56:47 [http-nio-8075-exec-2] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2026-04-01 10:56:47 [http-nio-8075-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
-2026-04-01 10:56:47 [http-nio-8075-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2026-04-05 13:02:44 [http-nio-8075-exec-9] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.controller.VendorController.issue()
+2026-04-05 13:02:44 [http-nio-8075-exec-9] INFO  c.c.controller.VendorController - [VendorController] Received issuance request – parentRequestId=e068b248-90c2-4c91-92f3-5b48123383ec, vendorId=V001, steps=[QUOTE_PREPARATION, ISSUE_QUOTE, UPLOAD_DOCUMENT, ISSUE_POLICY]
+2026-04-05 13:02:44 [http-nio-8075-exec-9] INFO  c.c.controller.VendorController - [VendorController] Acknowledged – parentRequestId=e068b248-90c2-4c91-92f3-5b48123383ec
+2026-04-05 13:02:44 [external-api-3] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.VendorPipelineAsyncService.runPipeline()
+2026-04-05 13:02:44 [http-nio-8075-exec-9] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.controller.VendorController.issue() completed in 2ms
+2026-04-05 13:02:44 [external-api-3] INFO  c.c.s.VendorPipelineAsyncService - [VendorPipeline] Starting – parentRequestId=e068b248-90c2-4c91-92f3-5b48123383ec, vendorId=V001, steps=[QUOTE_PREPARATION, ISSUE_QUOTE, UPLOAD_DOCUMENT, ISSUE_POLICY]
+2026-04-05 13:02:44 [external-api-3] INFO  c.c.pipeline.IssuancePipeline - [Pipeline] parentRequestId=e068b248-90c2-4c91-92f3-5b48123383ec | executing 4 step(s): [QUOTE_PREPARATION, ISSUE_QUOTE, UPLOAD_DOCUMENT, ISSUE_POLICY]
+2026-04-05 13:02:44 [external-api-3] INFO  c.c.pipeline.IssuancePipeline - [Pipeline] parentRequestId=e068b248-90c2-4c91-92f3-5b48123383ec | starting step 'QuotePreparation'
+2026-04-05 13:02:44 [external-api-3] DEBUG c.c.p.steps.QuotePreparationStep - [QuotePreparation] Calling DXC Quote Preparation service – insured=2400254, product=2000203
+2026-04-05 13:02:44 [external-api-3] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.impl.DXCQuotePreparationServiceImpl.quotePrepare()
+2026-04-05 13:02:54 [external-api-3] INFO  c.c.s.i.DXCQuotePreparationServiceImpl - Policy issued successfully: policyKey=913935, policyNo=ACCP003632324A
+2026-04-05 13:02:54 [external-api-3] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.impl.DXCQuotePreparationServiceImpl.quotePrepare() completed in 9580ms
+2026-04-05 13:02:54 [external-api-3] INFO  c.c.p.steps.QuotePreparationStep - [QuotePreparation] Quote prepared successfully – policyNo='ACCP003632324A', policyKey=913935
+2026-04-05 13:02:54 [external-api-3] INFO  c.c.pipeline.IssuancePipeline - [Pipeline] parentRequestId=e068b248-90c2-4c91-92f3-5b48123383ec | step 'QuotePreparation' completed successfully
+2026-04-05 13:02:54 [external-api-3] INFO  c.c.pipeline.IssuancePipeline - [Pipeline] parentRequestId=e068b248-90c2-4c91-92f3-5b48123383ec | starting step 'IssueQuote'
+2026-04-05 13:02:54 [external-api-3] DEBUG c.c.pipeline.steps.IssueQuoteStep - [IssueQuote] Issuing quote for policyNo='ACCP003632324A', parentRequestId='e068b248-90c2-4c91-92f3-5b48123383ec'
+2026-04-05 13:02:54 [external-api-3] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.DXC_IssueQuote_Service.issueQoute()
+2026-04-05 13:02:54 [external-api-3] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.prepareGETRequestBody()
+2026-04-05 13:02:54 [external-api-3] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.prepareGETRequestBody() completed in 0ms
+2026-04-05 13:02:54 [external-api-3] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.logRequest()
+2026-04-05 13:02:54 [external-api-3] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.logRequest() completed in 49ms
+2026-04-05 13:02:57 [external-api-3] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.logResponse()
+2026-04-05 13:02:57 [external-api-3] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.logResponse() completed in 54ms
+2026-04-05 13:02:57 [external-api-3] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.DXC_IssueQuote_Service.issueQoute() completed in 3123ms
+2026-04-05 13:02:57 [external-api-3] WARN  c.c.pipeline.IssuancePipeline - [Pipeline] parentRequestId=e068b248-90c2-4c91-92f3-5b48123383ec | step 'IssueQuote' failed: IssueQuote: DXC returned HTTP 400 BAD_REQUEST – {type=https://tools.ietf.org/html/rfc7231#section-6.5.1, title=Bad Request, errors={Activity-State condition has failed=[- 100% Fixed Deduction value for DT or MTD should be greater than '0', - Minimum Gross Premium Should Not Be Less Than 50 Kindly Override Premium, - Sector Head/Underwirter Manager  Approval Required For Backdated Policy], Policy Section-100% Limit=[The optionality rule for '100% Limit' has failed.]}, status=400}
+2026-04-05 13:02:57 [external-api-3] ERROR c.c.s.VendorPipelineAsyncService - [VendorPipeline] FAILURE – parentRequestId=e068b248-90c2-4c91-92f3-5b48123383ec, failedStep='IssueQuote', reason='IssueQuote: DXC returned HTTP 400 BAD_REQUEST – {type=https://tools.ietf.org/html/rfc7231#section-6.5.1, title=Bad Request, errors={Activity-State condition has failed=[- 100% Fixed Deduction value for DT or MTD should be greater than '0', - Minimum Gross Premium Should Not Be Less Than 50 Kindly Override Premium, - Sector Head/Underwirter Manager  Approval Required For Backdated Policy], Policy Section-100% Limit=[The optionality rule for '100% Limit' has failed.]}, status=400}'
+2026-04-05 13:02:57 [external-api-3] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.VendorPipelineAsyncService.runPipeline() completed in 12705ms
+2026-04-05 13:03:11 [http-nio-8075-exec-10] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.controller.VendorController.issue()
+2026-04-05 13:03:11 [http-nio-8075-exec-10] INFO  c.c.controller.VendorController - [VendorController] Received issuance request – parentRequestId=3e6da5ea-b940-4b6d-ad80-5edc164e0062, vendorId=V001, steps=[QUOTE_PREPARATION, ISSUE_QUOTE, UPLOAD_DOCUMENT, ISSUE_POLICY]
+2026-04-05 13:03:11 [external-api-4] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.VendorPipelineAsyncService.runPipeline()
+2026-04-05 13:03:11 [http-nio-8075-exec-10] INFO  c.c.controller.VendorController - [VendorController] Acknowledged – parentRequestId=3e6da5ea-b940-4b6d-ad80-5edc164e0062
+2026-04-05 13:03:11 [external-api-4] INFO  c.c.s.VendorPipelineAsyncService - [VendorPipeline] Starting – parentRequestId=3e6da5ea-b940-4b6d-ad80-5edc164e0062, vendorId=V001, steps=[QUOTE_PREPARATION, ISSUE_QUOTE, UPLOAD_DOCUMENT, ISSUE_POLICY]
+2026-04-05 13:03:11 [http-nio-8075-exec-10] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.controller.VendorController.issue() completed in 1ms
+2026-04-05 13:03:11 [external-api-4] INFO  c.c.pipeline.IssuancePipeline - [Pipeline] parentRequestId=3e6da5ea-b940-4b6d-ad80-5edc164e0062 | executing 4 step(s): [QUOTE_PREPARATION, ISSUE_QUOTE, UPLOAD_DOCUMENT, ISSUE_POLICY]
+2026-04-05 13:03:11 [external-api-4] INFO  c.c.pipeline.IssuancePipeline - [Pipeline] parentRequestId=3e6da5ea-b940-4b6d-ad80-5edc164e0062 | starting step 'QuotePreparation'
+2026-04-05 13:03:11 [external-api-4] DEBUG c.c.p.steps.QuotePreparationStep - [QuotePreparation] Calling DXC Quote Preparation service – insured=2400254, product=2000203
+2026-04-05 13:03:11 [external-api-4] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.impl.DXCQuotePreparationServiceImpl.quotePrepare()
+2026-04-05 13:03:17 [http-nio-8075-exec-1] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.controller.VendorController.issue()
+2026-04-05 13:03:17 [http-nio-8075-exec-1] INFO  c.c.controller.VendorController - [VendorController] Received issuance request – parentRequestId=8de2058f-7222-4a69-9803-810d815468e3, vendorId=V001, steps=[QUOTE_PREPARATION, ISSUE_QUOTE, UPLOAD_DOCUMENT, ISSUE_POLICY]
+2026-04-05 13:03:17 [external-api-5] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.VendorPipelineAsyncService.runPipeline()
+2026-04-05 13:03:17 [http-nio-8075-exec-1] INFO  c.c.controller.VendorController - [VendorController] Acknowledged – parentRequestId=8de2058f-7222-4a69-9803-810d815468e3
+2026-04-05 13:03:17 [http-nio-8075-exec-1] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.controller.VendorController.issue() completed in 1ms
+2026-04-05 13:03:17 [external-api-5] INFO  c.c.s.VendorPipelineAsyncService - [VendorPipeline] Starting – parentRequestId=8de2058f-7222-4a69-9803-810d815468e3, vendorId=V001, steps=[QUOTE_PREPARATION, ISSUE_QUOTE, UPLOAD_DOCUMENT, ISSUE_POLICY]
+2026-04-05 13:03:17 [external-api-5] INFO  c.c.pipeline.IssuancePipeline - [Pipeline] parentRequestId=8de2058f-7222-4a69-9803-810d815468e3 | executing 4 step(s): [QUOTE_PREPARATION, ISSUE_QUOTE, UPLOAD_DOCUMENT, ISSUE_POLICY]
+2026-04-05 13:03:17 [external-api-5] INFO  c.c.pipeline.IssuancePipeline - [Pipeline] parentRequestId=8de2058f-7222-4a69-9803-810d815468e3 | starting step 'QuotePreparation'
+2026-04-05 13:03:17 [external-api-5] DEBUG c.c.p.steps.QuotePreparationStep - [QuotePreparation] Calling DXC Quote Preparation service – insured=2400254, product=2000203
+2026-04-05 13:03:17 [external-api-5] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.impl.DXCQuotePreparationServiceImpl.quotePrepare()
+2026-04-05 13:03:21 [external-api-4] INFO  c.c.s.i.DXCQuotePreparationServiceImpl - Policy issued successfully: policyKey=913936, policyNo=ACCP003632424A
+2026-04-05 13:03:21 [external-api-4] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.impl.DXCQuotePreparationServiceImpl.quotePrepare() completed in 10719ms
+2026-04-05 13:03:21 [external-api-4] INFO  c.c.p.steps.QuotePreparationStep - [QuotePreparation] Quote prepared successfully – policyNo='ACCP003632424A', policyKey=913936
+2026-04-05 13:03:21 [external-api-4] INFO  c.c.pipeline.IssuancePipeline - [Pipeline] parentRequestId=3e6da5ea-b940-4b6d-ad80-5edc164e0062 | step 'QuotePreparation' completed successfully
+2026-04-05 13:03:21 [external-api-4] INFO  c.c.pipeline.IssuancePipeline - [Pipeline] parentRequestId=3e6da5ea-b940-4b6d-ad80-5edc164e0062 | starting step 'IssueQuote'
+2026-04-05 13:03:21 [external-api-4] DEBUG c.c.pipeline.steps.IssueQuoteStep - [IssueQuote] Issuing quote for policyNo='ACCP003632424A', parentRequestId='3e6da5ea-b940-4b6d-ad80-5edc164e0062'
+2026-04-05 13:03:21 [external-api-4] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.DXC_IssueQuote_Service.issueQoute()
+2026-04-05 13:03:22 [external-api-4] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.prepareGETRequestBody()
+2026-04-05 13:03:22 [external-api-4] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.prepareGETRequestBody() completed in 0ms
+2026-04-05 13:03:22 [external-api-4] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.logRequest()
+2026-04-05 13:03:22 [external-api-4] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.logRequest() completed in 31ms
+2026-04-05 13:03:25 [external-api-4] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.logResponse()
+2026-04-05 13:03:25 [external-api-4] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.logResponse() completed in 53ms
+2026-04-05 13:03:25 [external-api-4] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.DXC_IssueQuote_Service.issueQoute() completed in 3194ms
+2026-04-05 13:03:25 [external-api-4] WARN  c.c.pipeline.IssuancePipeline - [Pipeline] parentRequestId=3e6da5ea-b940-4b6d-ad80-5edc164e0062 | step 'IssueQuote' failed: IssueQuote: DXC returned HTTP 400 BAD_REQUEST – {type=https://tools.ietf.org/html/rfc7231#section-6.5.1, title=Bad Request, errors={Activity-State condition has failed=[- 100% Fixed Deduction value for DT or MTD should be greater than '0', - Minimum Gross Premium Should Not Be Less Than 50 Kindly Override Premium, - Sector Head/Underwirter Manager  Approval Required For Backdated Policy], Policy Section-100% Limit=[The optionality rule for '100% Limit' has failed.]}, status=400}
+2026-04-05 13:03:25 [external-api-4] ERROR c.c.s.VendorPipelineAsyncService - [VendorPipeline] FAILURE – parentRequestId=3e6da5ea-b940-4b6d-ad80-5edc164e0062, failedStep='IssueQuote', reason='IssueQuote: DXC returned HTTP 400 BAD_REQUEST – {type=https://tools.ietf.org/html/rfc7231#section-6.5.1, title=Bad Request, errors={Activity-State condition has failed=[- 100% Fixed Deduction value for DT or MTD should be greater than '0', - Minimum Gross Premium Should Not Be Less Than 50 Kindly Override Premium, - Sector Head/Underwirter Manager  Approval Required For Backdated Policy], Policy Section-100% Limit=[The optionality rule for '100% Limit' has failed.]}, status=400}'
+2026-04-05 13:03:25 [external-api-4] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.VendorPipelineAsyncService.runPipeline() completed in 13915ms
+2026-04-05 13:03:27 [external-api-5] INFO  c.c.s.i.DXCQuotePreparationServiceImpl - Policy issued successfully: policyKey=913937, policyNo=ACCP003632524A
+2026-04-05 13:03:27 [external-api-5] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.impl.DXCQuotePreparationServiceImpl.quotePrepare() completed in 10047ms
+2026-04-05 13:03:27 [external-api-5] INFO  c.c.p.steps.QuotePreparationStep - [QuotePreparation] Quote prepared successfully – policyNo='ACCP003632524A', policyKey=913937
+2026-04-05 13:03:27 [external-api-5] INFO  c.c.pipeline.IssuancePipeline - [Pipeline] parentRequestId=8de2058f-7222-4a69-9803-810d815468e3 | step 'QuotePreparation' completed successfully
+2026-04-05 13:03:27 [external-api-5] INFO  c.c.pipeline.IssuancePipeline - [Pipeline] parentRequestId=8de2058f-7222-4a69-9803-810d815468e3 | starting step 'IssueQuote'
+2026-04-05 13:03:27 [external-api-5] DEBUG c.c.pipeline.steps.IssueQuoteStep - [IssueQuote] Issuing quote for policyNo='ACCP003632524A', parentRequestId='8de2058f-7222-4a69-9803-810d815468e3'
+2026-04-05 13:03:27 [external-api-5] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.DXC_IssueQuote_Service.issueQoute()
+2026-04-05 13:03:27 [external-api-5] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.prepareGETRequestBody()
+2026-04-05 13:03:27 [external-api-5] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.prepareGETRequestBody() completed in 0ms
+2026-04-05 13:03:27 [external-api-5] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.logRequest()
+2026-04-05 13:03:27 [external-api-5] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.logRequest() completed in 33ms
+2026-04-05 13:03:29 [external-api-5] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.logResponse()
+2026-04-05 13:03:29 [external-api-5] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.logResponse() completed in 42ms
+2026-04-05 13:03:29 [external-api-5] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.DXC_IssueQuote_Service.issueQoute() completed in 2666ms
+2026-04-05 13:03:29 [external-api-5] WARN  c.c.pipeline.IssuancePipeline - [Pipeline] parentRequestId=8de2058f-7222-4a69-9803-810d815468e3 | step 'IssueQuote' failed: IssueQuote: DXC returned HTTP 400 BAD_REQUEST – {type=https://tools.ietf.org/html/rfc7231#section-6.5.1, title=Bad Request, errors={Activity-State condition has failed=[- 100% Fixed Deduction value for DT or MTD should be greater than '0', - Minimum Gross Premium Should Not Be Less Than 50 Kindly Override Premium, - Sector Head/Underwirter Manager  Approval Required For Backdated Policy], Policy Section-100% Limit=[The optionality rule for '100% Limit' has failed.]}, status=400}
+2026-04-05 13:03:29 [external-api-5] ERROR c.c.s.VendorPipelineAsyncService - [VendorPipeline] FAILURE – parentRequestId=8de2058f-7222-4a69-9803-810d815468e3, failedStep='IssueQuote', reason='IssueQuote: DXC returned HTTP 400 BAD_REQUEST – {type=https://tools.ietf.org/html/rfc7231#section-6.5.1, title=Bad Request, errors={Activity-State condition has failed=[- 100% Fixed Deduction value for DT or MTD should be greater than '0', - Minimum Gross Premium Should Not Be Less Than 50 Kindly Override Premium, - Sector Head/Underwirter Manager  Approval Required For Backdated Policy], Policy Section-100% Limit=[The optionality rule for '100% Limit' has failed.]}, status=400}'
+2026-04-05 13:03:29 [external-api-5] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.VendorPipelineAsyncService.runPipeline() completed in 12715ms
+2026-04-05 13:04:59 [http-nio-8075-exec-4] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.controller.VendorController.issue()
+2026-04-05 13:04:59 [http-nio-8075-exec-4] INFO  c.c.controller.VendorController - [VendorController] Received issuance request – parentRequestId=583118bb-b27d-4c7f-8251-c459eaf339a3, vendorId=V001, steps=[QUOTE_PREPARATION, ISSUE_QUOTE, UPLOAD_DOCUMENT, ISSUE_POLICY]
+2026-04-05 13:04:59 [http-nio-8075-exec-4] INFO  c.c.controller.VendorController - [VendorController] Acknowledged – parentRequestId=583118bb-b27d-4c7f-8251-c459eaf339a3
+2026-04-05 13:04:59 [external-api-1] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.VendorPipelineAsyncService.runPipeline()
+2026-04-05 13:04:59 [http-nio-8075-exec-4] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.controller.VendorController.issue() completed in 0ms
+2026-04-05 13:04:59 [external-api-1] INFO  c.c.s.VendorPipelineAsyncService - [VendorPipeline] Starting – parentRequestId=583118bb-b27d-4c7f-8251-c459eaf339a3, vendorId=V001, steps=[QUOTE_PREPARATION, ISSUE_QUOTE, UPLOAD_DOCUMENT, ISSUE_POLICY]
+2026-04-05 13:04:59 [external-api-1] INFO  c.c.pipeline.IssuancePipeline - [Pipeline] parentRequestId=583118bb-b27d-4c7f-8251-c459eaf339a3 | executing 4 step(s): [QUOTE_PREPARATION, ISSUE_QUOTE, UPLOAD_DOCUMENT, ISSUE_POLICY]
+2026-04-05 13:04:59 [external-api-1] INFO  c.c.pipeline.IssuancePipeline - [Pipeline] parentRequestId=583118bb-b27d-4c7f-8251-c459eaf339a3 | starting step 'QuotePreparation'
+2026-04-05 13:04:59 [external-api-1] DEBUG c.c.p.steps.QuotePreparationStep - [QuotePreparation] Calling DXC Quote Preparation service – insured=2400254, product=2000203
+2026-04-05 13:04:59 [external-api-1] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.impl.DXCQuotePreparationServiceImpl.quotePrepare()
+2026-04-05 13:05:08 [http-nio-8075-exec-5] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.controller.VendorController.issue()
+2026-04-05 13:05:08 [http-nio-8075-exec-5] INFO  c.c.controller.VendorController - [VendorController] Received issuance request – parentRequestId=55749333-89db-4429-84cb-47372d3ec22a, vendorId=V001, steps=[QUOTE_PREPARATION, ISSUE_QUOTE, UPLOAD_DOCUMENT, ISSUE_POLICY]
+2026-04-05 13:05:08 [external-api-2] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.VendorPipelineAsyncService.runPipeline()
+2026-04-05 13:05:08 [external-api-2] INFO  c.c.s.VendorPipelineAsyncService - [VendorPipeline] Starting – parentRequestId=55749333-89db-4429-84cb-47372d3ec22a, vendorId=V001, steps=[QUOTE_PREPARATION, ISSUE_QUOTE, UPLOAD_DOCUMENT, ISSUE_POLICY]
+2026-04-05 13:05:08 [http-nio-8075-exec-5] INFO  c.c.controller.VendorController - [VendorController] Acknowledged – parentRequestId=55749333-89db-4429-84cb-47372d3ec22a
+2026-04-05 13:05:08 [external-api-2] INFO  c.c.pipeline.IssuancePipeline - [Pipeline] parentRequestId=55749333-89db-4429-84cb-47372d3ec22a | executing 4 step(s): [QUOTE_PREPARATION, ISSUE_QUOTE, UPLOAD_DOCUMENT, ISSUE_POLICY]
+2026-04-05 13:05:08 [external-api-2] INFO  c.c.pipeline.IssuancePipeline - [Pipeline] parentRequestId=55749333-89db-4429-84cb-47372d3ec22a | starting step 'QuotePreparation'
+2026-04-05 13:05:08 [http-nio-8075-exec-5] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.controller.VendorController.issue() completed in 0ms
+2026-04-05 13:05:08 [external-api-2] DEBUG c.c.p.steps.QuotePreparationStep - [QuotePreparation] Calling DXC Quote Preparation service – insured=2400254, product=2000203
+2026-04-05 13:05:08 [external-api-2] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.impl.DXCQuotePreparationServiceImpl.quotePrepare()
+2026-04-05 13:05:09 [http-nio-8075-exec-6] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.controller.VendorController.issue()
+2026-04-05 13:05:09 [http-nio-8075-exec-6] INFO  c.c.controller.VendorController - [VendorController] Received issuance request – parentRequestId=a5d5d142-3212-4cc4-bd79-f0e71d41586a, vendorId=V001, steps=[QUOTE_PREPARATION, ISSUE_QUOTE, UPLOAD_DOCUMENT, ISSUE_POLICY]
+2026-04-05 13:05:09 [http-nio-8075-exec-6] INFO  c.c.controller.VendorController - [VendorController] Acknowledged – parentRequestId=a5d5d142-3212-4cc4-bd79-f0e71d41586a
+2026-04-05 13:05:09 [external-api-3] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.VendorPipelineAsyncService.runPipeline()
+2026-04-05 13:05:09 [http-nio-8075-exec-6] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.controller.VendorController.issue() completed in 0ms
+2026-04-05 13:05:09 [external-api-3] INFO  c.c.s.VendorPipelineAsyncService - [VendorPipeline] Starting – parentRequestId=a5d5d142-3212-4cc4-bd79-f0e71d41586a, vendorId=V001, steps=[QUOTE_PREPARATION, ISSUE_QUOTE, UPLOAD_DOCUMENT, ISSUE_POLICY]
+2026-04-05 13:05:09 [external-api-3] INFO  c.c.pipeline.IssuancePipeline - [Pipeline] parentRequestId=a5d5d142-3212-4cc4-bd79-f0e71d41586a | executing 4 step(s): [QUOTE_PREPARATION, ISSUE_QUOTE, UPLOAD_DOCUMENT, ISSUE_POLICY]
+2026-04-05 13:05:09 [external-api-3] INFO  c.c.pipeline.IssuancePipeline - [Pipeline] parentRequestId=a5d5d142-3212-4cc4-bd79-f0e71d41586a | starting step 'QuotePreparation'
+2026-04-05 13:05:09 [external-api-3] DEBUG c.c.p.steps.QuotePreparationStep - [QuotePreparation] Calling DXC Quote Preparation service – insured=2400254, product=2000203
+2026-04-05 13:05:09 [external-api-3] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.impl.DXCQuotePreparationServiceImpl.quotePrepare()
+2026-04-05 13:05:10 [http-nio-8075-exec-7] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.controller.VendorController.issue()
+2026-04-05 13:05:10 [http-nio-8075-exec-7] INFO  c.c.controller.VendorController - [VendorController] Received issuance request – parentRequestId=78457ca8-2d52-4554-95f5-734614de07ec, vendorId=V001, steps=[QUOTE_PREPARATION, ISSUE_QUOTE, UPLOAD_DOCUMENT, ISSUE_POLICY]
+2026-04-05 13:05:10 [http-nio-8075-exec-7] INFO  c.c.controller.VendorController - [VendorController] Acknowledged – parentRequestId=78457ca8-2d52-4554-95f5-734614de07ec
+2026-04-05 13:05:10 [external-api-4] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.VendorPipelineAsyncService.runPipeline()
+2026-04-05 13:05:10 [http-nio-8075-exec-7] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.controller.VendorController.issue() completed in 0ms
+2026-04-05 13:05:10 [external-api-4] INFO  c.c.s.VendorPipelineAsyncService - [VendorPipeline] Starting – parentRequestId=78457ca8-2d52-4554-95f5-734614de07ec, vendorId=V001, steps=[QUOTE_PREPARATION, ISSUE_QUOTE, UPLOAD_DOCUMENT, ISSUE_POLICY]
+2026-04-05 13:05:10 [external-api-4] INFO  c.c.pipeline.IssuancePipeline - [Pipeline] parentRequestId=78457ca8-2d52-4554-95f5-734614de07ec | executing 4 step(s): [QUOTE_PREPARATION, ISSUE_QUOTE, UPLOAD_DOCUMENT, ISSUE_POLICY]
+2026-04-05 13:05:10 [external-api-4] INFO  c.c.pipeline.IssuancePipeline - [Pipeline] parentRequestId=78457ca8-2d52-4554-95f5-734614de07ec | starting step 'QuotePreparation'
+2026-04-05 13:05:10 [external-api-4] DEBUG c.c.p.steps.QuotePreparationStep - [QuotePreparation] Calling DXC Quote Preparation service – insured=2400254, product=2000203
+2026-04-05 13:05:10 [external-api-4] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.impl.DXCQuotePreparationServiceImpl.quotePrepare()
+2026-04-05 13:05:11 [external-api-1] INFO  c.c.s.i.DXCQuotePreparationServiceImpl - Policy issued successfully: policyKey=913938, policyNo=ACCP003632624A
+2026-04-05 13:05:11 [external-api-1] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.impl.DXCQuotePreparationServiceImpl.quotePrepare() completed in 11668ms
+2026-04-05 13:05:11 [external-api-1] INFO  c.c.p.steps.QuotePreparationStep - [QuotePreparation] Quote prepared successfully – policyNo='ACCP003632624A', policyKey=913938
+2026-04-05 13:05:11 [external-api-1] INFO  c.c.pipeline.IssuancePipeline - [Pipeline] parentRequestId=583118bb-b27d-4c7f-8251-c459eaf339a3 | step 'QuotePreparation' completed successfully
+2026-04-05 13:05:11 [external-api-1] INFO  c.c.pipeline.IssuancePipeline - [Pipeline] parentRequestId=583118bb-b27d-4c7f-8251-c459eaf339a3 | starting step 'IssueQuote'
+2026-04-05 13:05:11 [external-api-1] DEBUG c.c.pipeline.steps.IssueQuoteStep - [IssueQuote] Issuing quote for policyNo='ACCP003632624A', parentRequestId='583118bb-b27d-4c7f-8251-c459eaf339a3'
+2026-04-05 13:05:11 [external-api-1] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.DXC_IssueQuote_Service.issueQoute()
+2026-04-05 13:05:11 [external-api-1] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.prepareGETRequestBody()
+2026-04-05 13:05:11 [external-api-1] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.prepareGETRequestBody() completed in 0ms
+2026-04-05 13:05:11 [external-api-1] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.logRequest()
+2026-04-05 13:05:11 [external-api-1] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.logRequest() completed in 63ms
+2026-04-05 13:05:14 [external-api-1] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.logResponse()
+2026-04-05 13:05:14 [external-api-1] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.logResponse() completed in 83ms
+2026-04-05 13:05:14 [external-api-1] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.DXC_IssueQuote_Service.issueQoute() completed in 3855ms
+2026-04-05 13:05:14 [external-api-1] WARN  c.c.pipeline.IssuancePipeline - [Pipeline] parentRequestId=583118bb-b27d-4c7f-8251-c459eaf339a3 | step 'IssueQuote' failed: IssueQuote: DXC returned HTTP 400 BAD_REQUEST – {type=https://tools.ietf.org/html/rfc7231#section-6.5.1, title=Bad Request, errors={Activity-State condition has failed=[- 100% Fixed Deduction value for DT or MTD should be greater than '0', - Minimum Gross Premium Should Not Be Less Than 50 Kindly Override Premium, - Sector Head/Underwirter Manager  Approval Required For Backdated Policy], Policy Section-100% Limit=[The optionality rule for '100% Limit' has failed.]}, status=400}
+2026-04-05 13:05:14 [external-api-1] ERROR c.c.s.VendorPipelineAsyncService - [VendorPipeline] FAILURE – parentRequestId=583118bb-b27d-4c7f-8251-c459eaf339a3, failedStep='IssueQuote', reason='IssueQuote: DXC returned HTTP 400 BAD_REQUEST – {type=https://tools.ietf.org/html/rfc7231#section-6.5.1, title=Bad Request, errors={Activity-State condition has failed=[- 100% Fixed Deduction value for DT or MTD should be greater than '0', - Minimum Gross Premium Should Not Be Less Than 50 Kindly Override Premium, - Sector Head/Underwirter Manager  Approval Required For Backdated Policy], Policy Section-100% Limit=[The optionality rule for '100% Limit' has failed.]}, status=400}'
+2026-04-05 13:05:14 [external-api-1] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.VendorPipelineAsyncService.runPipeline() completed in 15526ms
+2026-04-05 13:05:20 [external-api-3] INFO  c.c.s.i.DXCQuotePreparationServiceImpl - Policy issued successfully: policyKey=913940, policyNo=ACCP003632824A
+2026-04-05 13:05:20 [external-api-3] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.impl.DXCQuotePreparationServiceImpl.quotePrepare() completed in 11110ms
+2026-04-05 13:05:20 [external-api-3] INFO  c.c.p.steps.QuotePreparationStep - [QuotePreparation] Quote prepared successfully – policyNo='ACCP003632824A', policyKey=913940
+2026-04-05 13:05:20 [external-api-3] INFO  c.c.pipeline.IssuancePipeline - [Pipeline] parentRequestId=a5d5d142-3212-4cc4-bd79-f0e71d41586a | step 'QuotePreparation' completed successfully
+2026-04-05 13:05:20 [external-api-3] INFO  c.c.pipeline.IssuancePipeline - [Pipeline] parentRequestId=a5d5d142-3212-4cc4-bd79-f0e71d41586a | starting step 'IssueQuote'
+2026-04-05 13:05:20 [external-api-3] DEBUG c.c.pipeline.steps.IssueQuoteStep - [IssueQuote] Issuing quote for policyNo='ACCP003632824A', parentRequestId='a5d5d142-3212-4cc4-bd79-f0e71d41586a'
+2026-04-05 13:05:20 [external-api-3] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.DXC_IssueQuote_Service.issueQoute()
+2026-04-05 13:05:20 [external-api-3] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.prepareGETRequestBody()
+2026-04-05 13:05:20 [external-api-3] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.prepareGETRequestBody() completed in 0ms
+2026-04-05 13:05:20 [external-api-3] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.logRequest()
+2026-04-05 13:05:21 [external-api-3] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.logRequest() completed in 31ms
+2026-04-05 13:05:21 [external-api-2] INFO  c.c.s.i.DXCQuotePreparationServiceImpl - Policy issued successfully: policyKey=913939, policyNo=ACCP003632724A
+2026-04-05 13:05:21 [external-api-2] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.impl.DXCQuotePreparationServiceImpl.quotePrepare() completed in 13243ms
+2026-04-05 13:05:21 [external-api-2] INFO  c.c.p.steps.QuotePreparationStep - [QuotePreparation] Quote prepared successfully – policyNo='ACCP003632724A', policyKey=913939
+2026-04-05 13:05:21 [external-api-2] INFO  c.c.pipeline.IssuancePipeline - [Pipeline] parentRequestId=55749333-89db-4429-84cb-47372d3ec22a | step 'QuotePreparation' completed successfully
+2026-04-05 13:05:21 [external-api-2] INFO  c.c.pipeline.IssuancePipeline - [Pipeline] parentRequestId=55749333-89db-4429-84cb-47372d3ec22a | starting step 'IssueQuote'
+2026-04-05 13:05:21 [external-api-2] DEBUG c.c.pipeline.steps.IssueQuoteStep - [IssueQuote] Issuing quote for policyNo='ACCP003632724A', parentRequestId='55749333-89db-4429-84cb-47372d3ec22a'
+2026-04-05 13:05:21 [external-api-2] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.DXC_IssueQuote_Service.issueQoute()
+2026-04-05 13:05:21 [external-api-2] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.prepareGETRequestBody()
+2026-04-05 13:05:21 [external-api-2] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.prepareGETRequestBody() completed in 0ms
+2026-04-05 13:05:21 [external-api-2] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.logRequest()
+2026-04-05 13:05:21 [external-api-2] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.logRequest() completed in 47ms
+2026-04-05 13:05:23 [external-api-3] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.logResponse()
+2026-04-05 13:05:23 [external-api-3] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.logResponse() completed in 40ms
+2026-04-05 13:05:23 [external-api-3] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.DXC_IssueQuote_Service.issueQoute() completed in 3020ms
+2026-04-05 13:05:23 [external-api-3] WARN  c.c.pipeline.IssuancePipeline - [Pipeline] parentRequestId=a5d5d142-3212-4cc4-bd79-f0e71d41586a | step 'IssueQuote' failed: IssueQuote: DXC returned HTTP 400 BAD_REQUEST – {type=https://tools.ietf.org/html/rfc7231#section-6.5.1, title=Bad Request, errors={Activity-State condition has failed=[- 100% Fixed Deduction value for DT or MTD should be greater than '0', - Minimum Gross Premium Should Not Be Less Than 50 Kindly Override Premium, - Sector Head/Underwirter Manager  Approval Required For Backdated Policy], Policy Section-100% Limit=[The optionality rule for '100% Limit' has failed.]}, status=400}
+2026-04-05 13:05:23 [external-api-3] ERROR c.c.s.VendorPipelineAsyncService - [VendorPipeline] FAILURE – parentRequestId=a5d5d142-3212-4cc4-bd79-f0e71d41586a, failedStep='IssueQuote', reason='IssueQuote: DXC returned HTTP 400 BAD_REQUEST – {type=https://tools.ietf.org/html/rfc7231#section-6.5.1, title=Bad Request, errors={Activity-State condition has failed=[- 100% Fixed Deduction value for DT or MTD should be greater than '0', - Minimum Gross Premium Should Not Be Less Than 50 Kindly Override Premium, - Sector Head/Underwirter Manager  Approval Required For Backdated Policy], Policy Section-100% Limit=[The optionality rule for '100% Limit' has failed.]}, status=400}'
+2026-04-05 13:05:23 [external-api-3] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.VendorPipelineAsyncService.runPipeline() completed in 14130ms
+2026-04-05 13:05:24 [external-api-4] INFO  c.c.s.i.DXCQuotePreparationServiceImpl - Policy issued successfully: policyKey=913941, policyNo=ACCP003632924A
+2026-04-05 13:05:24 [external-api-4] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.impl.DXCQuotePreparationServiceImpl.quotePrepare() completed in 13810ms
+2026-04-05 13:05:24 [external-api-4] INFO  c.c.p.steps.QuotePreparationStep - [QuotePreparation] Quote prepared successfully – policyNo='ACCP003632924A', policyKey=913941
+2026-04-05 13:05:24 [external-api-4] INFO  c.c.pipeline.IssuancePipeline - [Pipeline] parentRequestId=78457ca8-2d52-4554-95f5-734614de07ec | step 'QuotePreparation' completed successfully
+2026-04-05 13:05:24 [external-api-4] INFO  c.c.pipeline.IssuancePipeline - [Pipeline] parentRequestId=78457ca8-2d52-4554-95f5-734614de07ec | starting step 'IssueQuote'
+2026-04-05 13:05:24 [external-api-4] DEBUG c.c.pipeline.steps.IssueQuoteStep - [IssueQuote] Issuing quote for policyNo='ACCP003632924A', parentRequestId='78457ca8-2d52-4554-95f5-734614de07ec'
+2026-04-05 13:05:24 [external-api-4] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.DXC_IssueQuote_Service.issueQoute()
+2026-04-05 13:05:24 [external-api-4] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.prepareGETRequestBody()
+2026-04-05 13:05:24 [external-api-4] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.prepareGETRequestBody() completed in 0ms
+2026-04-05 13:05:24 [external-api-4] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.logRequest()
+2026-04-05 13:05:24 [external-api-4] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.logRequest() completed in 34ms
+2026-04-05 13:05:25 [external-api-2] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.logResponse()
+2026-04-05 13:05:25 [external-api-2] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.logResponse() completed in 42ms
+2026-04-05 13:05:25 [external-api-2] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.DXC_IssueQuote_Service.issueQoute() completed in 3883ms
+2026-04-05 13:05:25 [external-api-2] WARN  c.c.pipeline.IssuancePipeline - [Pipeline] parentRequestId=55749333-89db-4429-84cb-47372d3ec22a | step 'IssueQuote' failed: IssueQuote: DXC returned HTTP 400 BAD_REQUEST – {type=https://tools.ietf.org/html/rfc7231#section-6.5.1, title=Bad Request, errors={Activity-State condition has failed=[- 100% Fixed Deduction value for DT or MTD should be greater than '0', - Minimum Gross Premium Should Not Be Less Than 50 Kindly Override Premium, - Sector Head/Underwirter Manager  Approval Required For Backdated Policy], Policy Section-100% Limit=[The optionality rule for '100% Limit' has failed.]}, status=400}
+2026-04-05 13:05:25 [external-api-2] ERROR c.c.s.VendorPipelineAsyncService - [VendorPipeline] FAILURE – parentRequestId=55749333-89db-4429-84cb-47372d3ec22a, failedStep='IssueQuote', reason='IssueQuote: DXC returned HTTP 400 BAD_REQUEST – {type=https://tools.ietf.org/html/rfc7231#section-6.5.1, title=Bad Request, errors={Activity-State condition has failed=[- 100% Fixed Deduction value for DT or MTD should be greater than '0', - Minimum Gross Premium Should Not Be Less Than 50 Kindly Override Premium, - Sector Head/Underwirter Manager  Approval Required For Backdated Policy], Policy Section-100% Limit=[The optionality rule for '100% Limit' has failed.]}, status=400}'
+2026-04-05 13:05:25 [external-api-2] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.VendorPipelineAsyncService.runPipeline() completed in 17140ms
+2026-04-05 13:05:27 [external-api-4] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.logResponse()
+2026-04-05 13:05:27 [external-api-4] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.Logger.logResponse() completed in 79ms
+2026-04-05 13:05:27 [external-api-4] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.DXC_IssueQuote_Service.issueQoute() completed in 3354ms
+2026-04-05 13:05:27 [external-api-4] WARN  c.c.pipeline.IssuancePipeline - [Pipeline] parentRequestId=78457ca8-2d52-4554-95f5-734614de07ec | step 'IssueQuote' failed: IssueQuote: DXC returned HTTP 400 BAD_REQUEST – {type=https://tools.ietf.org/html/rfc7231#section-6.5.1, title=Bad Request, errors={Activity-State condition has failed=[- 100% Fixed Deduction value for DT or MTD should be greater than '0', - Minimum Gross Premium Should Not Be Less Than 50 Kindly Override Premium, - Sector Head/Underwirter Manager  Approval Required For Backdated Policy], Policy Section-100% Limit=[The optionality rule for '100% Limit' has failed.]}, status=400}
+2026-04-05 13:05:27 [external-api-4] ERROR c.c.s.VendorPipelineAsyncService - [VendorPipeline] FAILURE – parentRequestId=78457ca8-2d52-4554-95f5-734614de07ec, failedStep='IssueQuote', reason='IssueQuote: DXC returned HTTP 400 BAD_REQUEST – {type=https://tools.ietf.org/html/rfc7231#section-6.5.1, title=Bad Request, errors={Activity-State condition has failed=[- 100% Fixed Deduction value for DT or MTD should be greater than '0', - Minimum Gross Premium Should Not Be Less Than 50 Kindly Override Premium, - Sector Head/Underwirter Manager  Approval Required For Backdated Policy], Policy Section-100% Limit=[The optionality rule for '100% Limit' has failed.]}, status=400}'
+2026-04-05 13:05:27 [external-api-4] DEBUG com.custombond.config.LoggingAspect - ? com.custombond.service.VendorPipelineAsyncService.runPipeline() completed in 17189ms
+2026-04-05 14:24:09 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2026-04-05 14:24:09 [Thread-5] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-05 14:24:09 [Thread-5] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-04-05 14:24:09 [Thread-5] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-04-05 14:24:09 [restartedMain] INFO  c.custombond.CustomBondApplication - Starting CustomBondApplication using Java 17.0.9 with PID 13332 (D:\Work\Finals\testing\CB\CustomBond\target\classes started by 081786 in D:\Work\Finals\testing\CB\CustomBond)
+2026-04-05 14:24:09 [restartedMain] DEBUG c.custombond.CustomBondApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2026-04-05 14:24:09 [restartedMain] INFO  c.custombond.CustomBondApplication - The following 1 profile is active: "dev"
+2026-04-05 14:24:10 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-05 14:24:10 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 10 ms. Found 2 JPA repository interfaces.
+2026-04-05 14:24:10 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8075 (http)
+2026-04-05 14:24:10 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-05 14:24:10 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2026-04-05 14:24:10 [restartedMain] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2026-04-05 14:24:10 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 417 ms
+2026-04-05 14:24:10 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-05 14:24:10 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-04-05 14:24:10 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-05 14:24:10 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Starting...
+2026-04-05 14:24:10 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-2 - Added connection ConnectionID:51 ClientConnectionId: 582e1871-10ef-4b76-b8b1-129e5a3aaff0
+2026-04-05 14:24:10 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Start completed.
+2026-04-05 14:24:10 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: SQLServerDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-05 14:24:10 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-05 14:24:10 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-05 14:24:10 [restartedMain] INFO  c.c.pipeline.IssuancePipeline - [Pipeline] Registered 5 step(s): [QUOTE_PREPARATION, ISSUE_QUOTE, ISSUE_POLICY, UPLOAD_DOCUMENT, CHECK_BLACK_LIST]
+2026-04-05 14:24:10 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-05 14:24:10 [restartedMain] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoint(s) beneath base path '/actuator'
+2026-04-05 14:24:10 [restartedMain] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@41a8ea4b, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@20147cba, org.springframework.security.web.context.SecurityContextHolderFilter@3679884f, org.springframework.security.web.header.HeaderWriterFilter@35ded44, org.springframework.web.filter.CorsFilter@799feb36, org.springframework.security.web.authentication.logout.LogoutFilter@57028764, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@4a056b17, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@69e37c6c, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1ae191e2, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@17641174, org.springframework.security.web.session.SessionManagementFilter@1004ec5, org.springframework.security.web.access.ExceptionTranslationFilter@7305fe9d, org.springframework.security.web.access.intercept.AuthorizationFilter@2c4f4098]
+2026-04-05 14:24:10 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2026-04-05 14:24:10 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8075 (http) with context path '/api'
+2026-04-05 14:24:10 [restartedMain] INFO  c.custombond.CustomBondApplication - Started CustomBondApplication in 1.192 seconds (process running for 8853.512)
+2026-04-05 14:24:10 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2026-04-05 14:24:13 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2026-04-05 14:24:13 [Thread-7] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-05 14:24:13 [Thread-7] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Shutdown initiated...
+2026-04-05 14:24:13 [Thread-7] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Shutdown completed.
+2026-04-05 14:24:13 [restartedMain] INFO  c.custombond.CustomBondApplication - Starting CustomBondApplication using Java 17.0.9 with PID 13332 (D:\Work\Finals\testing\CB\CustomBond\target\classes started by 081786 in D:\Work\Finals\testing\CB\CustomBond)
+2026-04-05 14:24:13 [restartedMain] DEBUG c.custombond.CustomBondApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2026-04-05 14:24:13 [restartedMain] INFO  c.custombond.CustomBondApplication - The following 1 profile is active: "dev"
+2026-04-05 14:24:13 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-05 14:24:13 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 8 ms. Found 2 JPA repository interfaces.
+2026-04-05 14:24:13 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8075 (http)
+2026-04-05 14:24:13 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-05 14:24:13 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2026-04-05 14:24:13 [restartedMain] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2026-04-05 14:24:13 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 289 ms
+2026-04-05 14:24:13 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-05 14:24:13 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-04-05 14:24:13 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-05 14:24:13 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Starting...
+2026-04-05 14:24:13 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-3 - Added connection ConnectionID:61 ClientConnectionId: f7615c38-1231-4292-8f48-c0e6d8d4f9d1
+2026-04-05 14:24:13 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Start completed.
+2026-04-05 14:24:13 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: SQLServerDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-05 14:24:13 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-05 14:24:13 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-05 14:24:14 [restartedMain] INFO  c.c.pipeline.IssuancePipeline - [Pipeline] Registered 5 step(s): [CHECK_BLACK_LIST, ISSUE_POLICY, QUOTE_PREPARATION, UPLOAD_DOCUMENT, ISSUE_QUOTE]
+2026-04-05 14:24:14 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-05 14:24:14 [restartedMain] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoint(s) beneath base path '/actuator'
+2026-04-05 14:24:14 [restartedMain] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@6ed91a9f, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7a4ecefb, org.springframework.security.web.context.SecurityContextHolderFilter@390790c0, org.springframework.security.web.header.HeaderWriterFilter@790e51cd, org.springframework.web.filter.CorsFilter@58eb455e, org.springframework.security.web.authentication.logout.LogoutFilter@56a08d33, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@3394e2f5, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@5979d21, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7457e519, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@b585c3b, org.springframework.security.web.session.SessionManagementFilter@727ca645, org.springframework.security.web.access.ExceptionTranslationFilter@638ae339, org.springframework.security.web.access.intercept.AuthorizationFilter@5971ed7d]
+2026-04-05 14:24:14 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2026-04-05 14:24:14 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8075 (http) with context path '/api'
+2026-04-05 14:24:14 [restartedMain] INFO  c.custombond.CustomBondApplication - Started CustomBondApplication in 0.817 seconds (process running for 8856.815)
+2026-04-05 14:24:14 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2026-04-05 23:12:54 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 106 class path changes (0 additions, 106 deletions, 0 modifications)
+2026-04-05 23:12:54 [Thread-11] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-05 23:12:54 [Thread-11] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Shutdown initiated...
+2026-04-05 23:12:54 [Thread-11] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Shutdown completed.
+2026-04-05 23:12:58 [restartedMain] INFO  c.custombond.CustomBondApplication - Starting CustomBondApplication using Java 17.0.9 with PID 13332 (D:\Work\Finals\testing\CB\CustomBond\target\classes started by 081786 in D:\Work\Finals\testing\CB\CustomBond)
+2026-04-05 23:12:58 [restartedMain] DEBUG c.custombond.CustomBondApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2026-04-05 23:12:58 [restartedMain] INFO  c.custombond.CustomBondApplication - The following 1 profile is active: "dev"
+2026-04-05 23:12:58 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-05 23:12:58 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 1 ms. Found 0 JPA repository interfaces.
+2026-04-05 23:12:58 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8075 (http)
+2026-04-05 23:12:58 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-05 23:12:58 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2026-04-05 23:12:58 [restartedMain] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2026-04-05 23:12:58 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 510 ms
+2026-04-05 23:12:58 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-05 23:12:58 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-04-05 23:12:58 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-05 23:12:58 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-4 - Starting...
+2026-04-05 23:12:58 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-4 - Added connection ConnectionID:241 ClientConnectionId: 58f5c527-56ca-45a0-bd03-37d31ecfb8c6
+2026-04-05 23:12:58 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-4 - Start completed.
+2026-04-05 23:12:58 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: SQLServerDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-05 23:12:58 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-05 23:12:58 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-05 23:12:58 [restartedMain] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'DXC_Auth': Unsatisfied dependency expressed through field 'restTemplate': Error creating bean with name 'restTemplate' defined in com.custombond.CustomBondApplication: Failed to instantiate [org.springframework.web.client.RestTemplate]: Illegal factory instance for factory method 'restTemplate'; instance: com.custombond.CustomBondApplication$$SpringCGLIB$$0
+2026-04-05 23:12:58 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-05 23:12:58 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-4 - Shutdown initiated...
+2026-04-05 23:12:58 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-4 - Shutdown completed.
+2026-04-05 23:12:58 [restartedMain] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2026-04-05 23:12:58 [restartedMain] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-04-05 23:12:58 [restartedMain] ERROR o.s.boot.SpringApplication - Application run failed
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'DXC_Auth': Unsatisfied dependency expressed through field 'restTemplate': Error creating bean with name 'restTemplate' defined in com.custombond.CustomBondApplication: Failed to instantiate [org.springframework.web.client.RestTemplate]: Illegal factory instance for factory method 'restTemplate'; instance: com.custombond.CustomBondApplication$$SpringCGLIB$$0
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:787) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:767) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:145) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:508) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1419) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:599) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:975) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:962) ~[spring-context-6.1.6.jar:6.1.6]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:624) ~[spring-context-6.1.6.jar:6.1.6]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.2.5.jar:3.2.5]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754) ~[spring-boot-3.2.5.jar:3.2.5]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456) ~[spring-boot-3.2.5.jar:3.2.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:334) ~[spring-boot-3.2.5.jar:3.2.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) ~[spring-boot-3.2.5.jar:3.2.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1343) ~[spring-boot-3.2.5.jar:3.2.5]
+	at com.custombond.CustomBondApplication.main(CustomBondApplication.java:19) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50) ~[spring-boot-devtools-3.2.5.jar:3.2.5]
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'restTemplate' defined in com.custombond.CustomBondApplication: Failed to instantiate [org.springframework.web.client.RestTemplate]: Illegal factory instance for factory method 'restTemplate'; instance: com.custombond.CustomBondApplication$$SpringCGLIB$$0
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:648) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:485) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1335) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1165) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:562) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1443) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1353) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:784) ~[spring-beans-6.1.6.jar:6.1.6]
+	... 25 common frames omitted
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.web.client.RestTemplate]: Illegal factory instance for factory method 'restTemplate'; instance: com.custombond.CustomBondApplication$$SpringCGLIB$$0
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:159) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:644) ~[spring-beans-6.1.6.jar:6.1.6]
+	... 38 common frames omitted
+Caused by: java.lang.IllegalArgumentException: object is not an instance of declaring class
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:140) ~[spring-beans-6.1.6.jar:6.1.6]
+	... 39 common frames omitted
+2026-04-05 23:13:03 [restartedMain] INFO  c.custombond.CustomBondApplication - Starting CustomBondApplication using Java 17.0.9 with PID 13332 (D:\Work\Finals\testing\CB\CustomBond\target\classes started by 081786 in D:\Work\Finals\testing\CB\CustomBond)
+2026-04-05 23:13:03 [restartedMain] DEBUG c.custombond.CustomBondApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2026-04-05 23:13:03 [restartedMain] INFO  c.custombond.CustomBondApplication - The following 1 profile is active: "dev"
+2026-04-05 23:13:03 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-05 23:13:03 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 8 ms. Found 2 JPA repository interfaces.
+2026-04-05 23:13:04 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8075 (http)
+2026-04-05 23:13:04 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-05 23:13:04 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2026-04-05 23:13:04 [restartedMain] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2026-04-05 23:13:04 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 639 ms
+2026-04-05 23:13:04 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-05 23:13:04 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-04-05 23:13:04 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-05 23:13:04 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-5 - Starting...
+2026-04-05 23:13:04 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-5 - Added connection ConnectionID:242 ClientConnectionId: d2f21c06-e755-432e-871e-de4ff6f0a179
+2026-04-05 23:13:04 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-5 - Start completed.
+2026-04-05 23:13:04 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: SQLServerDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-05 23:13:04 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-05 23:13:04 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-05 23:13:04 [restartedMain] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'DXC_Auth': Unsatisfied dependency expressed through field 'restTemplate': Error creating bean with name 'restTemplate' defined in com.custombond.CustomBondApplication: Failed to instantiate [org.springframework.web.client.RestTemplate]: Illegal factory instance for factory method 'restTemplate'; instance: com.custombond.CustomBondApplication$$SpringCGLIB$$0
+2026-04-05 23:13:04 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-05 23:13:04 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-5 - Shutdown initiated...
+2026-04-05 23:13:04 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-5 - Shutdown completed.
+2026-04-05 23:13:04 [restartedMain] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2026-04-05 23:13:04 [restartedMain] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-04-05 23:13:04 [restartedMain] ERROR o.s.boot.SpringApplication - Application run failed
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'DXC_Auth': Unsatisfied dependency expressed through field 'restTemplate': Error creating bean with name 'restTemplate' defined in com.custombond.CustomBondApplication: Failed to instantiate [org.springframework.web.client.RestTemplate]: Illegal factory instance for factory method 'restTemplate'; instance: com.custombond.CustomBondApplication$$SpringCGLIB$$0
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:787) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:767) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:145) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:508) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1419) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:599) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:975) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:962) ~[spring-context-6.1.6.jar:6.1.6]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:624) ~[spring-context-6.1.6.jar:6.1.6]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.2.5.jar:3.2.5]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754) ~[spring-boot-3.2.5.jar:3.2.5]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456) ~[spring-boot-3.2.5.jar:3.2.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:334) ~[spring-boot-3.2.5.jar:3.2.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) ~[spring-boot-3.2.5.jar:3.2.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1343) ~[spring-boot-3.2.5.jar:3.2.5]
+	at com.custombond.CustomBondApplication.main(CustomBondApplication.java:19) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50) ~[spring-boot-devtools-3.2.5.jar:3.2.5]
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'restTemplate' defined in com.custombond.CustomBondApplication: Failed to instantiate [org.springframework.web.client.RestTemplate]: Illegal factory instance for factory method 'restTemplate'; instance: com.custombond.CustomBondApplication$$SpringCGLIB$$0
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:648) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:485) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1335) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1165) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:562) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1443) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1353) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:784) ~[spring-beans-6.1.6.jar:6.1.6]
+	... 25 common frames omitted
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.web.client.RestTemplate]: Illegal factory instance for factory method 'restTemplate'; instance: com.custombond.CustomBondApplication$$SpringCGLIB$$0
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:159) ~[spring-beans-6.1.6.jar:6.1.6]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:644) ~[spring-beans-6.1.6.jar:6.1.6]
+	... 38 common frames omitted
+Caused by: java.lang.IllegalArgumentException: object is not an instance of declaring class
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:140) ~[spring-beans-6.1.6.jar:6.1.6]
+	... 39 common frames omitted
+2026-04-05 23:13:08 [restartedMain] INFO  c.custombond.CustomBondApplication - Starting CustomBondApplication using Java 17.0.9 with PID 39608 (D:\Work\Finals\testing\CB\CustomBond\target\classes started by 081786 in D:\Work\Finals\testing\CB\CustomBond)
+2026-04-05 23:13:08 [restartedMain] DEBUG c.custombond.CustomBondApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2026-04-05 23:13:08 [restartedMain] INFO  c.custombond.CustomBondApplication - The following 1 profile is active: "dev"
+2026-04-05 23:13:08 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-04-05 23:13:08 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-04-05 23:13:08 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-05 23:13:08 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 56 ms. Found 2 JPA repository interfaces.
+2026-04-05 23:13:09 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8075 (http)
+2026-04-05 23:13:09 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-05 23:13:09 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2026-04-05 23:13:09 [restartedMain] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2026-04-05 23:13:09 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1698 ms
+2026-04-05 23:13:10 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-05 23:13:10 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-04-05 23:13:10 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-04-05 23:13:10 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-05 23:13:10 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-04-05 23:13:10 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection ConnectionID:1 ClientConnectionId: b5338236-7003-435b-b409-a42481b4a65e
+2026-04-05 23:13:10 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-04-05 23:13:10 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: SQLServerDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-05 23:13:11 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-05 23:13:11 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-05 23:13:11 [restartedMain] INFO  c.c.pipeline.IssuancePipeline - [Pipeline] Registered 5 step(s): [ISSUE_QUOTE, ISSUE_POLICY, UPLOAD_DOCUMENT, CHECK_BLACK_LIST, QUOTE_PREPARATION]

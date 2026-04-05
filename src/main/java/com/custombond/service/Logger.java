@@ -43,7 +43,7 @@ public class Logger {
 
     public Map<String, Object> log(String ApiName, String RequestBody, String ResponseBody, UUID ParentRequestId,
             String URL,
-            String MethodType, String VendorId, String callType,String vendorRequestBody,String vendorRequestId) {
+            String MethodType, String VendorId, String callType, String vendorRequestBody, String vendorRequestId) {
 
         Map<String, Object> ret = new HashMap<>();
         try {
@@ -51,7 +51,7 @@ public class Logger {
             ret.put("isSaved", true);
             ret.put("log", cGeneralLogRepository
                     .save(buildLog(ApiName, RequestBody, ResponseBody, ParentRequestId, URL, MethodType, VendorId,
-                            callType,vendorRequestBody,vendorRequestId)));
+                            callType, vendorRequestBody, vendorRequestId)));
             return ret;
         } catch (Exception e) {
             System.out.println(e.toString());
@@ -63,7 +63,8 @@ public class Logger {
     }
 
     public CBGeneralLog buildLog(String ApiName, String RequestBody, String ResponseBody, UUID ParentRequestId,
-            String URL, String MethodType, String VendorId, String callType,String vendorRequestBody,String vendorRequestId) {
+            String URL, String MethodType, String VendorId, String callType, String vendorRequestBody,
+            String vendorRequestId) {
         CBGeneralLog cbGeneralLog = new CBGeneralLog();
         cbGeneralLog.setApiName(ApiName);
         cbGeneralLog.setRequestBody(RequestBody);
@@ -81,7 +82,8 @@ public class Logger {
     }
 
     public CBGeneralLog buildRequestLog(String ApiName, String RequestBody, String ResponseBody, UUID ParentRequestId,
-            String URL, String MethodType, String VendorId, String callType,String vendorRequestBody,String vendorRequestId) {
+            String URL, String MethodType, String VendorId, String callType, String vendorRequestBody,
+            String vendorRequestId) {
         CBGeneralLog cbGeneralLog = new CBGeneralLog();
         cbGeneralLog.setApiName(ApiName);
         cbGeneralLog.setRequestBody(RequestBody);
@@ -106,7 +108,7 @@ public class Logger {
     }
 
     public Map<String, Object> logRequest(String ApiName, String RequestBody, UUID ParentRequestId, String URL,
-            String MethodType, String VendorId, String callType,String vendorRequestBody,String vendorRequestId) {
+            String MethodType, String VendorId, String callType, String vendorRequestBody, String vendorRequestId) {
 
         Map<String, Object> DBResponse = new HashMap<>();
         try {
@@ -115,7 +117,7 @@ public class Logger {
             DBResponse.put("requestId",
                     cGeneralLogRepository
                             .save(buildRequestLog(ApiName, RequestBody, null, ParentRequestId, URL, MethodType,
-                                    VendorId, callType,vendorRequestBody,vendorRequestId))
+                                    VendorId, callType, vendorRequestBody, vendorRequestId))
                             .getRequestId());
 
             return DBResponse;
@@ -186,12 +188,12 @@ public class Logger {
             Response.setExisted(true);
             if (!blacklisted) {
                 Response.setStatus(Enums.Status.APPROVED);
-                Response.setContactKey((Integer)DXC_Response.getBody().get("key"));
+                Response.setContactKey((Integer) DXC_Response.getBody().get("key"));
                 Response.setRejectionReasonAr(null);
                 Response.setRejectionCode(null);
 
             } else {
-
+                Response.setContactKey((Integer) DXC_Response.getBody().get("key"));
                 Response.setStatus(Enums.Status.REJECTED);
                 Response.setRejectionReasonAr("");
                 Response.setRejectionCode(null);
@@ -202,7 +204,6 @@ public class Logger {
         }
 
         logResponse(JsonConverter.toJson(DXC_Response), requestId);
-
         return FinalResponse;
     }
 

@@ -1,6 +1,7 @@
 package com.custombond.dto.request;
 
 import com.custombond.dto.request.ContactData.Stakeholder;
+import com.fasterxml.jackson.annotation.JsonAlias;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -47,6 +48,7 @@ public class BlackListRequest {
     @Pattern(regexp = "^\\d{14}$", message = "legalRepNationalId must be 14 digits")
     private String legalRepNationalId;
 
+    @JsonAlias({"nafezaInsuranceRequestId"})
     private String vendorRequestId;
 
     // enums
@@ -60,13 +62,13 @@ public class BlackListRequest {
         PUBLIC
     }
 
-    public static BlackListRequest toEntity(CB_IssuePolicyRequest policyRequest) {
+    public static BlackListRequest toEntity(CB_IssuePolicyRequest policyRequest,String vendorId) {
         Stakeholder stakeholder = policyRequest.getStakeholder();
         BlackListRequest entity = new BlackListRequest();
-        //entity.setCallSequance(policyRequest.get);
+        entity.setCallSequance(BlackListRequest.CallSequence.valueOf(policyRequest.getCallSequance().name()));
         entity.setStakeholderName(stakeholder.getStakeholderName());
         entity.setSectorType(BlackListRequest.SectorType.valueOf(stakeholder.getSectorType().name()));
-       // entity.setVendorId(this.vendorId);
+        entity.setVendorId(vendorId);
         entity.setTaxId(stakeholder.getTaxId());
         entity.setNationalId(stakeholder.getLegalRepNationalId());
         entity.setContactKey(stakeholder.getContactKey());
@@ -76,7 +78,7 @@ public class BlackListRequest {
         entity.setEmail(stakeholder.getEmail());
         entity.setLegalRepName(stakeholder.getLegalRepName());
         entity.setLegalRepNationalId(stakeholder.getLegalRepNationalId());
-        //entity.setVendorRequestId(this.vendorRequestId);
+        entity.setVendorRequestId(policyRequest.getNafezaInsuranceRequestId());
         return entity;
     }
 }
