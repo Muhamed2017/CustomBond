@@ -1,5 +1,6 @@
 package com.custombond.controller;
 
+import com.custombond.dto.request.NafezaIssuanceRequest;
 import com.custombond.dto.request.VendorIssuanceRequest;
 import com.custombond.dto.response.VendorIssuanceAcknowledgement;
 import com.custombond.service.VendorPipelineAsyncService;
@@ -142,6 +143,80 @@ public class VendorController {
                 .build();
 
         log.info("[VendorController] Acknowledged – parentRequestId={}", parentRequestId);
+
+        return ResponseEntity.accepted().body(acknowledgement);
+    }
+
+    /**
+     * Accepts a NAFEZA vendor issuance request, returns an immediate acknowledgement, and
+     * processes the configured pipeline steps asynchronously.
+     *
+     * <p>The key difference from {@link #issue} is that the {@code insured} field in the
+     * quote preparation block is resolved automatically from the DXC contact key returned
+     * by the {@code CHECK_BLACK_LIST} step, so vendors do not need to look it up beforehand.
+     *
+     * @param request the NAFEZA issuance request (JSON, sent as the {@code data} part)
+     * @param file    optional document file (sent as the {@code file} part);
+     *                must be present when {@code NAFEZA_UPLOAD_DOCUMENTS} is in the steps list
+     * @return HTTP 202 with a {@link VendorIssuanceAcknowledgement} containing the correlation ID
+     */
+    @PostMapping(value = "/issue/nafeza", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(
+            summary = "Submit a NAFEZA vendor issuance request",
+            description = "Validates the NAFEZA request synchronously and immediately acknowledges receipt (HTTP 202). "
+                    + "The configured pipeline steps are then executed asynchronously. "
+                    + "Unlike the standard /vendor/issue endpoint, the 'insured' field in the quote "
+                    + "preparation block is resolved automatically from the contact key returned by the "
+                    + "CHECK_BLACK_LIST step, so vendors do not need to supply it explicitly.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "202",
+                    description = "NAFEZA request accepted – pipeline will execute asynchronously",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = VendorIssuanceAcknowledgement.class))),
+            @ApiResponse(responseCode = "400",
+                    description = "Validation error in the request payload or unreadable file"),
+            @ApiResponse(responseCode = "500",
+                    description = "Unexpected server error before pipeline could be started")
+    })
+    public ResponseEntity<VendorIssuanceAcknowledgement> issueNafeza(
+            @RequestPart("data") @Valid NafezaIssuanceRequest request,
+            @RequestPart(value = "file", required = false) MultipartFile file) {
+
+        String parentRequestId = UUID.randomUUID().toString();
+
+        log.info("[VendorController/NAFEZA] Received request – parentRequestId={}, vendorId={}, steps={}",
+                parentRequestId, request.getVendorId(), request.getSteps());
+
+        byte[] fileBytes = null;
+        String fileName = null;
+        String fileContentType = null;
+
+        if (file != null && !file.isEmpty()) {
+            try {
+                fileBytes = file.getBytes();
+                fileName = file.getOriginalFilename();
+                fileContentType = file.getContentType();
+                log.debug("[VendorController/NAFEZA] Received file '{}' ({} bytes, type={})",
+                        fileName, fileBytes.length, fileContentType);
+            } catch (IOException e) {
+                log.error("[VendorController/NAFEZA] Failed to read uploaded file – parentRequestId={}: {}",
+                        parentRequestId, e.getMessage(), e);
+                return ResponseEntity.badRequest().build();
+            }
+        }
+
+        vendorPipelineAsyncService.runNafezaPipeline(
+                request, parentRequestId, fileBytes, fileName, fileContentType);
+
+        VendorIssuanceAcknowledgement acknowledgement = VendorIssuanceAcknowledgement.builder()
+                .requestId(parentRequestId)
+                .vendorRequestId(request.getVendorRequestId())
+                .message("NAFEZA request accepted. Processing pipeline asynchronously.")
+                .acceptedAt(LocalDateTime.now())
+                .steps(request.getSteps())
+                .build();
+
+        log.info("[VendorController/NAFEZA] Acknowledged – parentRequestId={}", parentRequestId);
 
         return ResponseEntity.accepted().body(acknowledgement);
     }
