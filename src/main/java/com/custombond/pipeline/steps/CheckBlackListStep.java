@@ -81,13 +81,7 @@ public class CheckBlackListStep implements PipelineStep {
 
         BlackListResponse body = response.getBody();
 
-        // Surface any service-level error message
-        if (body.getErrorMessage() != null) {
-            throw new PipelineStepException(
-                    getName() + ": DXC error – " + body.getErrorMessage());
-        }
-
-        // Abort if the stakeholder is explicitly rejected
+        // Abort if the stakeholder is explicitly rejected – this is the only hard stop
         if (Enums.Status.REJECTED.equals(body.getStatus())) {
             String reason = body.getRejectionReasonAr() != null
                     ? body.getRejectionReasonAr()
@@ -96,16 +90,36 @@ public class CheckBlackListStep implements PipelineStep {
                     getName() + ": stakeholder is REJECTED – " + reason);
         }
 
-        // Abort if HTTP status is not 2xx
+        // HTTP 404 + APPROVED means the contact does not yet exist in DXC but is not
+        // blacklisted. The downstream NAFEZA_QUOTE_PREPARATION step will call GetContact
+        // to obtain the contact key once DXC has created it. Treat this as a pass.
+        if (response.getStatusCode().value() == 404
+                && Enums.Status.APPROVED.equals(body.getStatus())) {
+            context.setBlackListResult(body);
+            log.info("[{}] Contact not found in DXC (will be resolved by downstream step) – APPROVED",
+                    getName());
+            return;
+        }
+
+        // Any other non-2xx response is an unexpected error
         if (!response.getStatusCode().is2xxSuccessful()) {
             throw new PipelineStepException(
                     getName() + ": DXC returned HTTP " + response.getStatusCode());
         }
 
+        // Surface actual service-level errors (non-blank message that is not the benign
+        // "TaxId is not found" which is covered by the 404 branch above)
+        if (body.getErrorMessage() != null
+                && !body.getErrorMessage().isEmpty()
+                && !"TaxId is not found".equals(body.getErrorMessage())) {
+            throw new PipelineStepException(
+                    getName() + ": DXC error – " + body.getErrorMessage());
+        }
+
         // Persist result for downstream steps
         context.setBlackListResult(body);
-        log.info("[{}] Stakeholder '{}' passed black-list check (status={})",
-                getName(), data.getStakeholderName(), body.getStatus());
+        log.info("[{}] Stakeholder '{}' passed black-list check – status={}, existed={}",
+                getName(), data.getStakeholderName(), body.getStatus(), body.isExisted());
     }
 
     // -----------------------------------------------------------------------
