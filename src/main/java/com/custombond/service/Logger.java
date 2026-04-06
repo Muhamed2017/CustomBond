@@ -212,8 +212,9 @@ public class Logger {
         ObjectMapper mapper = new ObjectMapper();
         Integer documentKey = null;
         try {
-            documentKey = Integer.valueOf(mapper.readValue(response, Map.class).get("documentKey").toString());
-        } catch (JsonProcessingException e) {
+            Object key = mapper.readValue(response, Map.class).get("documentKey");
+            documentKey = key != null ? Integer.valueOf(key.toString()) : null;
+        } catch (Exception e) {
             documentKey = null;
             e.printStackTrace();
         }
