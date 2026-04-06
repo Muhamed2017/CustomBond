@@ -2,7 +2,7 @@
   "info": {
     "_postman_id": "custombond-api-collection-v1",
     "name": "CustomBond API",
-    "description": "Complete Postman collection for the CustomBond application.\n\n## Setup\n1. Import `CustomBond.postman_environment.json` as your environment.\n2. Set `base_url` to match your deployment (default: `http://localhost:8075/api`).\n3. Run **DXC Auth → Login** first – the test script auto-saves the token to the `dxc_token` environment variable.\n\n## Controllers\n| Controller | Base Path | Description |\n|---|---|---|\n| DxcAuthController | `/dxc/auth` | DXC authentication (login / logout) |\n| DxcController | `/dxc/services` | Individual DXC service calls |\n| CBIssueInsurancePolicyController | `/cb/services` | CB full-cycle issuance (legacy) |\n| VendorController | `/vendor` | Async vendor pipeline – main entry point |\n\n## Vendor Pipeline Flow\nThe recommended entry point for vendors is `POST /vendor/issue`.\nThe server responds immediately with HTTP 202 and a `requestId`.\nThe configured steps execute asynchronously. Results are logged and\noptionally POSTed to your `callbackUrl`.",
+    "description": "Complete Postman collection for the CustomBond application.\n\n## Setup\n1. Import `CustomBond.postman_environment.json` as your environment.\n2. Set `base_url` to match your deployment (default: `http://localhost:8075/api`).\n3. Run **DXC Auth → Login** first – the test script auto-saves the token to the `dxc_token` environment variable.\n\n## Controllers\n| Controller | Base Path | Description |\n|---|---|---|\n| DxcAuthController | `/dxc/auth` | DXC authentication (login / logout) |\n| DxcController | `/dxc/services` | Individual DXC service calls |\n| CBIssueInsurancePolicyController | `/cb/services` | CB full-cycle issuance (legacy) |\n| VendorController | `/vendor` | Async vendor pipeline – main entry point |\n\n## Vendor Pipeline Flow\nUse `POST /vendor/issue` for standard flows where you supply all quote-preparation fields including `insured`.\n\n## NAFEZA Vendor Pipeline Flow\nUse `POST /vendor/issue/nafeza` when the `insured` (DXC contact key) should be resolved automatically\nfrom the black-list step. The `nafezaQuoteData` block is identical to `quotePreparation` except\nit omits the `insured` field – the pipeline injects it from `blackListResult.contactKey`.\n\n### NAFEZA step sequence\n`CHECK_BLACK_LIST → NAFEZA_QUOTE_PREPARATION → NAFEZA_UPLOAD_DOCUMENTS → ISSUE_QUOTE → ISSUE_POLICY`",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
 
@@ -659,6 +659,353 @@
               "path": ["vendor", "issue"]
             },
             "description": "Single-step pipeline – useful for vendors that only need the black-list check and handle the rest of the flow themselves."
+          }
+        }
+
+      ]
+    },
+
+    {
+      "name": "NAFEZA Vendor Pipeline API",
+      "description": "NAFEZA-specific issuance pipeline: `POST /vendor/issue/nafeza`.\n\nKey difference from the standard `/vendor/issue` endpoint:\n- Vendors supply a `nafezaQuoteData` block **without** the `insured` field.\n- The pipeline injects `insured` automatically from the DXC contact key\n  returned by the `CHECK_BLACK_LIST` step (`blackListResult.contactKey`).\n- This removes the need for NAFEZA vendors to look up the contact key before calling the API.\n\n## Request format\nSame `multipart/form-data` as `/vendor/issue`:\n- Part **`data`** (Content-Type: application/json) – the `NafezaIssuanceRequest` JSON\n- Part **`file`** (optional binary) – required when `NAFEZA_UPLOAD_DOCUMENTS` is in the steps list\n\n## Available step types for NAFEZA\n| Step | Requires block | Requires file |\n|---|---|---|\n| `CHECK_BLACK_LIST` | `blackList` | No |\n| `NAFEZA_QUOTE_PREPARATION` | `nafezaQuoteData` | No |\n| `NAFEZA_UPLOAD_DOCUMENTS` | `upload` | **Yes** |\n| `ISSUE_QUOTE` | – (uses context policyNo) | No |\n| `ISSUE_POLICY` | – (uses context policyNo) | No |\n\n## Important prerequisite\n`CHECK_BLACK_LIST` **must** precede `NAFEZA_QUOTE_PREPARATION` so the contact key is available.\nIf the stakeholder doesn't yet exist in DXC (HTTP 404 + APPROVED), the pipeline still\npasses the blacklist step – but `contactKey` will be null, which will cause\n`NAFEZA_QUOTE_PREPARATION` to abort with a clear error message.",
+      "item": [
+
+        {
+          "name": "NAFEZA – Full Cycle (5 steps + document)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Response is 202 Accepted', function () {",
+                  "    pm.response.to.have.status(202);",
+                  "});",
+                  "",
+                  "pm.test('Acknowledgement contains requestId', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('requestId');",
+                  "    pm.expect(json.requestId).to.be.a('string').and.not.empty;",
+                  "    pm.environment.set('nafeza_parent_request_id', json.requestId);",
+                  "    console.log('NAFEZA pipeline requestId:', json.requestId);",
+                  "});",
+                  "",
+                  "pm.test('Steps list echoed back contains 5 steps', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.steps).to.be.an('array').with.lengthOf(5);",
+                  "});",
+                  "",
+                  "pm.test('Message confirms async processing', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.message).to.include('asynchronously');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data",
+                  "type": "text",
+                  "value": "{\n  \"vendorId\": \"{{vendor_id}}\",\n  \"vendorRequestId\": \"NAFEZA-{{$randomInt}}\",\n  \"callbackUrl\": \"https://vendor.example.com/webhook/nafeza-result\",\n  \"steps\": [\n    \"CHECK_BLACK_LIST\",\n    \"NAFEZA_QUOTE_PREPARATION\",\n    \"NAFEZA_UPLOAD_DOCUMENTS\",\n    \"ISSUE_QUOTE\",\n    \"ISSUE_POLICY\"\n  ],\n  \"blackList\": {\n    \"stakeholderName\": \"Acme Corporation\",\n    \"sectorType\": \"PRIVATE\",\n    \"taxId\": \"123456789\",\n    \"nationalId\": null,\n    \"contactKey\": null,\n    \"commercialRegNo\": \"CR-2024-001\",\n    \"address\": \"123 Business District, Cairo\",\n    \"phone\": \"+201234567890\",\n    \"email\": \"contact@acme.com\",\n    \"legalRepName\": \"Mohammed Ahmed\",\n    \"legalRepNationalId\": \"12345678901234\"\n  },\n  \"nafezaQuoteData\": {\n    \"effectiveDate\": \"2024-07-01\",\n    \"expiryDate\": \"2025-07-01\",\n    \"currency\": 818,\n    \"division\": 1001,\n    \"subDivision\": 2001,\n    \"underWriterContactKey\": 67890,\n    \"mop\": 1,\n    \"producer\": 100,\n    \"maximumExposure\": 500000,\n    \"product\": 3001,\n    \"hazardLevel\": 2,\n    \"policyName\": 5,\n    \"contactTPA\": 200,\n    \"gracePeriodDays\": 30,\n    \"marketSourceKey\": 10,\n    \"usePerecntageInBeneficiary\": false,\n    \"benficiaries\": [\n      {\n        \"contactId\": 11111,\n        \"limit\": 100000,\n        \"currency\": 818,\n        \"sharePercentage\": 100,\n        \"print\": true\n      }\n    ],\n    \"additionalInsureds\": [\n      {\n        \"contactId\": 22222,\n        \"limit\": 50000,\n        \"currency\": 818\n      }\n    ]\n  },\n  \"upload\": {\n    \"entityKey\": 10,\n    \"documentType\": 3,\n    \"instnceKey\": null\n  }\n}",
+                  "contentType": "application/json",
+                  "description": "NafezaIssuanceRequest – full 5-step NAFEZA pipeline.\n\nNOTE: 'insured' is intentionally absent from nafezaQuoteData.\nThe pipeline resolves it from blackListResult.contactKey automatically."
+                },
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "",
+                  "description": "Document binary (required because NAFEZA_UPLOAD_DOCUMENTS is in the steps list). Attach any PDF or image."
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/vendor/issue/nafeza",
+              "host": ["{{base_url}}"],
+              "path": ["vendor", "issue", "nafeza"]
+            },
+            "description": "Full NAFEZA issuance cycle – all 5 steps:\n\n1. **CHECK_BLACK_LIST** – verifies the stakeholder is not blacklisted and captures the DXC contact key.\n2. **NAFEZA_QUOTE_PREPARATION** – resolves `insured` from the contact key obtained in step 1, then calls the DXC Quote Preparation API. Produces `policyNo` and `policyKey`.\n3. **NAFEZA_UPLOAD_DOCUMENTS** – uploads the attached document. `instnceKey` is auto-resolved from `policyKey` produced in step 2.\n4. **ISSUE_QUOTE** – issues the quote using `policyNo` from step 2.\n5. **ISSUE_POLICY** – finalises and issues the policy.\n\n**Key difference vs /vendor/issue:** `nafezaQuoteData` does NOT include `insured`.\n\nThe test script saves `requestId` to `{{nafeza_parent_request_id}}`.\n\n**Before sending:** Attach a real document file in the `file` part."
+          }
+        },
+
+        {
+          "name": "NAFEZA – Full Cycle Without Document (4 steps)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Response is 202 Accepted', function () {",
+                  "    pm.response.to.have.status(202);",
+                  "});",
+                  "",
+                  "pm.test('Acknowledgement contains requestId', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('requestId');",
+                  "    pm.environment.set('nafeza_parent_request_id', json.requestId);",
+                  "    console.log('NAFEZA pipeline requestId:', json.requestId);",
+                  "});",
+                  "",
+                  "pm.test('Steps list echoed back contains 4 steps', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.steps).to.be.an('array').with.lengthOf(4);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data",
+                  "type": "text",
+                  "value": "{\n  \"vendorId\": \"{{vendor_id}}\",\n  \"vendorRequestId\": \"NAFEZA-{{$randomInt}}\",\n  \"callbackUrl\": \"https://vendor.example.com/webhook/nafeza-result\",\n  \"steps\": [\n    \"CHECK_BLACK_LIST\",\n    \"NAFEZA_QUOTE_PREPARATION\",\n    \"ISSUE_QUOTE\",\n    \"ISSUE_POLICY\"\n  ],\n  \"blackList\": {\n    \"stakeholderName\": \"Acme Corporation\",\n    \"sectorType\": \"PRIVATE\",\n    \"taxId\": \"123456789\",\n    \"nationalId\": null,\n    \"contactKey\": null,\n    \"commercialRegNo\": \"CR-2024-001\",\n    \"address\": \"123 Business District, Cairo\",\n    \"phone\": \"+201234567890\",\n    \"email\": \"contact@acme.com\",\n    \"legalRepName\": \"Mohammed Ahmed\",\n    \"legalRepNationalId\": \"12345678901234\"\n  },\n  \"nafezaQuoteData\": {\n    \"effectiveDate\": \"2024-07-01\",\n    \"expiryDate\": \"2025-07-01\",\n    \"currency\": 818,\n    \"division\": 1001,\n    \"subDivision\": 2001,\n    \"underWriterContactKey\": 67890,\n    \"mop\": 1,\n    \"producer\": 100,\n    \"maximumExposure\": 500000,\n    \"product\": 3001,\n    \"hazardLevel\": 2,\n    \"policyName\": 5,\n    \"contactTPA\": 200,\n    \"gracePeriodDays\": 30,\n    \"marketSourceKey\": 10,\n    \"usePerecntageInBeneficiary\": false,\n    \"benficiaries\": [\n      {\n        \"contactId\": 11111,\n        \"limit\": 100000,\n        \"currency\": 818,\n        \"sharePercentage\": 100,\n        \"print\": true\n      }\n    ],\n    \"additionalInsureds\": [\n      {\n        \"contactId\": 22222,\n        \"limit\": 50000,\n        \"currency\": 818\n      }\n    ]\n  }\n}",
+                  "contentType": "application/json",
+                  "description": "NAFEZA 4-step pipeline without document upload.\n\nNOTE: 'insured' is intentionally absent from nafezaQuoteData."
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/vendor/issue/nafeza",
+              "host": ["{{base_url}}"],
+              "path": ["vendor", "issue", "nafeza"]
+            },
+            "description": "NAFEZA pipeline without document upload:\n\n1. **CHECK_BLACK_LIST** – verifies stakeholder and captures DXC contact key.\n2. **NAFEZA_QUOTE_PREPARATION** – injects `insured` from contact key, calls Quote Preparation API.\n3. **ISSUE_QUOTE** – issues the quote using resolved `policyNo`.\n4. **ISSUE_POLICY** – finalises and issues the policy.\n\nNo `file` part needed – `NAFEZA_UPLOAD_DOCUMENTS` is excluded."
+          }
+        },
+
+        {
+          "name": "NAFEZA – Black List + Quote Preparation Only",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Response is 202 Accepted', function () {",
+                  "    pm.response.to.have.status(202);",
+                  "});",
+                  "",
+                  "pm.test('Acknowledgement contains requestId', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('requestId');",
+                  "    pm.environment.set('nafeza_parent_request_id', json.requestId);",
+                  "    console.log('NAFEZA pipeline requestId:', json.requestId);",
+                  "});",
+                  "",
+                  "pm.test('Steps list echoed back contains 2 steps', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.steps).to.be.an('array').with.lengthOf(2);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data",
+                  "type": "text",
+                  "value": "{\n  \"vendorId\": \"{{vendor_id}}\",\n  \"vendorRequestId\": \"NAFEZA-{{$randomInt}}\",\n  \"steps\": [\n    \"CHECK_BLACK_LIST\",\n    \"NAFEZA_QUOTE_PREPARATION\"\n  ],\n  \"blackList\": {\n    \"stakeholderName\": \"Acme Corporation\",\n    \"sectorType\": \"PRIVATE\",\n    \"taxId\": \"123456789\",\n    \"nationalId\": null,\n    \"contactKey\": null,\n    \"commercialRegNo\": \"CR-2024-001\",\n    \"address\": \"123 Business District, Cairo\",\n    \"phone\": \"+201234567890\",\n    \"email\": \"contact@acme.com\",\n    \"legalRepName\": \"Mohammed Ahmed\",\n    \"legalRepNationalId\": \"12345678901234\"\n  },\n  \"nafezaQuoteData\": {\n    \"effectiveDate\": \"2024-07-01\",\n    \"expiryDate\": \"2025-07-01\",\n    \"currency\": 818,\n    \"division\": 1001,\n    \"subDivision\": 2001,\n    \"underWriterContactKey\": 67890,\n    \"mop\": 1,\n    \"producer\": 100,\n    \"maximumExposure\": 500000,\n    \"product\": 3001,\n    \"hazardLevel\": 2,\n    \"policyName\": 5,\n    \"contactTPA\": 200,\n    \"gracePeriodDays\": 30,\n    \"marketSourceKey\": 10,\n    \"usePerecntageInBeneficiary\": false,\n    \"benficiaries\": [\n      {\n        \"contactId\": 11111,\n        \"limit\": 100000,\n        \"currency\": 818,\n        \"sharePercentage\": 100,\n        \"print\": true\n      }\n    ],\n    \"additionalInsureds\": [\n      {\n        \"contactId\": 22222,\n        \"limit\": 50000,\n        \"currency\": 818\n      }\n    ]\n  }\n}",
+                  "contentType": "application/json",
+                  "description": "2-step pipeline for testing the NAFEZA black-list + quote preparation flow in isolation."
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/vendor/issue/nafeza",
+              "host": ["{{base_url}}"],
+              "path": ["vendor", "issue", "nafeza"]
+            },
+            "description": "Use this request to validate the core NAFEZA flow:\n\n1. **CHECK_BLACK_LIST** – captures contact key from DXC.\n2. **NAFEZA_QUOTE_PREPARATION** – injects the contact key as `insured` and creates the policy quote.\n\nThe pipeline returns the `policyNo` and `policyKey` in the logs / callback.\nUseful for checking that the contact-key resolution and quote creation are working before running the full cycle."
+          }
+        },
+
+        {
+          "name": "NAFEZA – Black List Only",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Response is 202 Accepted', function () {",
+                  "    pm.response.to.have.status(202);",
+                  "});",
+                  "",
+                  "pm.test('Acknowledgement contains requestId', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('requestId');",
+                  "    pm.environment.set('nafeza_parent_request_id', json.requestId);",
+                  "    console.log('NAFEZA blacklist requestId:', json.requestId);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data",
+                  "type": "text",
+                  "value": "{\n  \"vendorId\": \"{{vendor_id}}\",\n  \"vendorRequestId\": \"NAFEZA-{{$randomInt}}\",\n  \"steps\": [\n    \"CHECK_BLACK_LIST\"\n  ],\n  \"blackList\": {\n    \"stakeholderName\": \"Acme Corporation\",\n    \"sectorType\": \"PRIVATE\",\n    \"taxId\": \"123456789\",\n    \"nationalId\": null,\n    \"contactKey\": null,\n    \"commercialRegNo\": \"CR-2024-001\",\n    \"address\": \"123 Business District, Cairo\",\n    \"phone\": \"+201234567890\",\n    \"email\": \"contact@acme.com\",\n    \"legalRepName\": \"Mohammed Ahmed\",\n    \"legalRepNationalId\": \"12345678901234\"\n  }\n}",
+                  "contentType": "application/json",
+                  "description": "Single-step black-list check via the NAFEZA endpoint."
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/vendor/issue/nafeza",
+              "host": ["{{base_url}}"],
+              "path": ["vendor", "issue", "nafeza"]
+            },
+            "description": "Runs only the black-list check through the NAFEZA endpoint.\nUseful for validating that the stakeholder exists in DXC and has a contact key\nbefore attempting a full NAFEZA cycle.\n\nCheck the server logs for the resolved `contactKey` value from the black-list response."
+          }
+        },
+
+        {
+          "name": "NAFEZA – Issue Quote + Issue Policy (pre-known policyNo)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Response is 202 Accepted', function () {",
+                  "    pm.response.to.have.status(202);",
+                  "});",
+                  "",
+                  "pm.test('Acknowledgement contains requestId', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('requestId');",
+                  "    pm.environment.set('nafeza_parent_request_id', json.requestId);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data",
+                  "type": "text",
+                  "value": "{\n  \"vendorId\": \"{{vendor_id}}\",\n  \"vendorRequestId\": \"NAFEZA-{{$randomInt}}\",\n  \"steps\": [\n    \"ISSUE_QUOTE\",\n    \"ISSUE_POLICY\"\n  ],\n  \"policyNo\": \"{{policy_no}}\"\n}",
+                  "contentType": "application/json",
+                  "description": "Use when policyNo was obtained from a prior NAFEZA_QUOTE_PREPARATION run."
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/vendor/issue/nafeza",
+              "host": ["{{base_url}}"],
+              "path": ["vendor", "issue", "nafeza"]
+            },
+            "description": "Use this when `NAFEZA_QUOTE_PREPARATION` has already been run in a prior request\nand you have a `policyNo` to issue against.\n\nUpdate `{{policy_no}}` in the environment (or inline in the body) with the value\nfrom the prior quote preparation logs before sending."
+          }
+        },
+
+        {
+          "name": "NAFEZA – Validation: Missing blackList block (expect 400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Response is 400 Bad Request', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "pm.test('Error indicates missing blackList', function () {",
+                  "    // Spring validation returns 400 with a structured error body",
+                  "    pm.expect(pm.response.code).to.equal(400);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data",
+                  "type": "text",
+                  "value": "{\n  \"vendorId\": \"{{vendor_id}}\",\n  \"vendorRequestId\": \"NAFEZA-ERR-001\",\n  \"steps\": [\n    \"CHECK_BLACK_LIST\",\n    \"NAFEZA_QUOTE_PREPARATION\"\n  ]\n}",
+                  "contentType": "application/json",
+                  "description": "Intentionally omits 'blackList' to trigger pipeline abort at CHECK_BLACK_LIST."
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/vendor/issue/nafeza",
+              "host": ["{{base_url}}"],
+              "path": ["vendor", "issue", "nafeza"]
+            },
+            "description": "Negative test: sends a NAFEZA request with `CHECK_BLACK_LIST` in the steps\nbut no `blackList` block.\n\nExpected behaviour:\n- HTTP 202 returned immediately (request accepted).\n- Pipeline fails asynchronously at `CHECK_BLACK_LIST` step.\n- Server logs show failure: `Missing required 'blackList' input data for step CheckBlackList`.\n- If `callbackUrl` is set, the callback receives a failure payload with `failedStep: CheckBlackList`.\n\n**Note:** Bean validation does not reject this at the HTTP layer because `blackList` has no `@NotNull`\nat the DTO level – the enforcement is inside the pipeline step."
+          }
+        },
+
+        {
+          "name": "NAFEZA – Validation: Missing vendorId (expect 400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Response is 400 Bad Request – vendorId is required', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data",
+                  "type": "text",
+                  "value": "{\n  \"vendorRequestId\": \"NAFEZA-ERR-002\",\n  \"steps\": [\n    \"CHECK_BLACK_LIST\"\n  ],\n  \"blackList\": {\n    \"stakeholderName\": \"Acme\",\n    \"sectorType\": \"PRIVATE\",\n    \"taxId\": \"123456789\"\n  }\n}",
+                  "contentType": "application/json",
+                  "description": "Intentionally omits 'vendorId' to trigger Bean Validation rejection at the HTTP layer."
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/vendor/issue/nafeza",
+              "host": ["{{base_url}}"],
+              "path": ["vendor", "issue", "nafeza"]
+            },
+            "description": "Negative test: omits the required `vendorId` field.\n\nExpected behaviour: HTTP **400 Bad Request** returned synchronously.\nSpring's `@Valid` enforcement rejects the request before the pipeline even starts."
           }
         }
 
