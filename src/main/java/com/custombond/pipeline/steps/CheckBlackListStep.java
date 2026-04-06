@@ -63,15 +63,24 @@ public class CheckBlackListStep implements PipelineStep {
      */
     @Override
     public void execute(IssuancePipelineContext context) throws PipelineStepException {
-        VendorBlackListData data = context.getRequest().getBlackList();
+        // Resolve blackList from the NAFEZA request if present, otherwise from the standard request
+        VendorBlackListData data = context.getNafezaRequest() != null
+                ? context.getNafezaRequest().getBlackList()
+                : context.getRequest().getBlackList();
+
         if (data == null) {
             throw new PipelineStepException(
                     "Missing required 'blackList' input data for step " + getName());
         }
 
+        // Resolve vendorId: NAFEZA request wins when present
+        String vendorId = context.getNafezaRequest() != null
+                ? context.getNafezaRequest().getVendorId()
+                : context.getRequest().getVendorId();
+
         BlackListRequest request = buildBlackListRequest(data, context);
         log.debug("[{}] Calling DXC black-list service for stakeholder='{}', vendorId='{}'",
-                getName(), data.getStakeholderName(), context.getRequest().getVendorId());
+                getName(), data.getStakeholderName(), vendorId);
 
         ResponseEntity<BlackListResponse> response = blackListService.checkBlackList(request);
 
@@ -137,9 +146,14 @@ public class CheckBlackListStep implements PipelineStep {
         req.setCallSequance(BlackListRequest.CallSequence.FIRST_CALL);
         req.setStakeholderName(data.getStakeholderName());
         req.setSectorType(BlackListRequest.SectorType.valueOf(data.getSectorType().name()));
-        // vendorId / vendorRequestId come from the top-level vendor request
-        req.setVendorId(context.getRequest().getVendorId());
-        req.setVendorRequestId(context.getRequest().getVendorRequestId());
+        // vendorId / vendorRequestId: prefer NAFEZA request when present
+        boolean isNafeza = context.getNafezaRequest() != null;
+        req.setVendorId(isNafeza
+                ? context.getNafezaRequest().getVendorId()
+                : context.getRequest().getVendorId());
+        req.setVendorRequestId(isNafeza
+                ? context.getNafezaRequest().getVendorRequestId()
+                : context.getRequest().getVendorRequestId());
         req.setTaxId(data.getTaxId());
         req.setNationalId(data.getNationalId());
         req.setContactKey(data.getContactKey());
