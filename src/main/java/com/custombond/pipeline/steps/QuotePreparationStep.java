@@ -73,7 +73,11 @@ public class QuotePreparationStep implements PipelineStep {
 
         DXCQuotePreparationResponse response;
         try {
-            response = quotePreparationService.quotePrepare(request);
+            response = quotePreparationService.quotePrepare(
+                    request,
+                    context.getParentRequestId(),
+                    context.getRequest().getVendorId(),
+                    context.getRequest().getVendorRequestId());
         } catch (DXCQuotePraparationApiBadRequestException e) {
             throw new PipelineStepException(
                     getName() + ": DXC rejected the quote request (400) – "

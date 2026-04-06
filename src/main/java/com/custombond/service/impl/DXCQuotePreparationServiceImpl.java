@@ -5,9 +5,12 @@ import com.custombond.auth.DXC_Auth;
 import com.custombond.dto.request.DXCQuotePreparationRequest;
 import com.custombond.dto.response.DXCQuotePreparationApiErrorResponse;
 import com.custombond.dto.response.DXCQuotePreparationResponse;
+import com.custombond.entity.Enums;
 import com.custombond.exception.DXCQuotePraparationApiBadRequestException;
 import com.custombond.exception.DXCQuotePraparationApiException;
 import com.custombond.service.DXCQuotePreparationService;
+import com.custombond.service.Logger;
+import com.custombond.util.JsonUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,8 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
+
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -30,23 +35,68 @@ public class DXCQuotePreparationServiceImpl implements DXCQuotePreparationServic
     @Autowired
     DXC_Auth dxc_Auth;
 
+    @Autowired
+    Logger logger;
+
+    @Autowired
+    JsonUtils jsonConverter;
+
     @Value("${app.external.quoteprepare-url}")
     private String quotePreparationPath;
 
     @Override
     public DXCQuotePreparationResponse quotePrepare(DXCQuotePreparationRequest request) {
+        return doQuotePrepare(request, null, null, null);
+    }
 
-        String Token = dxc_Auth.getDxcToken();
+    @Override
+    public DXCQuotePreparationResponse quotePrepare(DXCQuotePreparationRequest request,
+                                                     String parentRequestId,
+                                                     String vendorId,
+                                                     String vendorRequestId) {
+        return doQuotePrepare(request, parentRequestId, vendorId, vendorRequestId);
+    }
 
-        // log.info("Sending policy issuance request to external API: insured={}, product={}, division={}",
-        //         request.getInsured(), request.getProduct(), request.getDivision());
+    // -----------------------------------------------------------------------
+    // Core implementation
+    // -----------------------------------------------------------------------
 
-        System.out.println("Token is :" +  Token);
+    private DXCQuotePreparationResponse doQuotePrepare(DXCQuotePreparationRequest request,
+                                                        String parentRequestId,
+                                                        String vendorId,
+                                                        String vendorRequestId) {
+        String token = dxc_Auth.getDxcToken();
+        String requestJson = jsonConverter.toJson(request);
+
+        // Log the outbound request to DB when correlation params are available
+        UUID parentUuid = null;
+        String dbRequestId = null;
+        if (parentRequestId != null) {
+            try {
+                parentUuid = UUID.fromString(parentRequestId);
+            } catch (IllegalArgumentException e) {
+                log.warn("[QuotePreparation] parentRequestId '{}' is not a valid UUID – skipping DB log", parentRequestId);
+            }
+            if (parentUuid != null) {
+                Object rid = logger.logRequest(
+                        "QuotePreparation",
+                        requestJson,
+                        parentUuid,
+                        quotePreparationPath,
+                        Enums.MethodType.POST.toString(),
+                        vendorId,
+                        Enums.CallType.FIRST_CALL.toString(),
+                        requestJson,
+                        vendorRequestId
+                ).get("requestId");
+                dbRequestId = rid != null ? rid.toString() : null;
+            }
+        }
 
         DXCQuotePreparationResponse response = restClient.post()
                 .uri(quotePreparationPath)
                 .contentType(MediaType.APPLICATION_JSON)
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + Token)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                 .body(request)
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, (httpRequest, httpResponse) -> {
@@ -54,7 +104,7 @@ public class DXCQuotePreparationServiceImpl implements DXCQuotePreparationServic
                         DXCQuotePreparationApiErrorResponse errorResponse = objectMapper.readValue(
                                 httpResponse.getBody(), DXCQuotePreparationApiErrorResponse.class);
 
-                        log.warn("External API returned 4xx [status={}]: {}",
+                        log.warn("[QuotePreparation] External API returned 4xx [status={}]: {}",
                                 httpResponse.getStatusCode(), errorResponse);
 
                         if (httpResponse.getStatusCode() == HttpStatus.BAD_REQUEST) {
@@ -74,14 +124,19 @@ public class DXCQuotePreparationServiceImpl implements DXCQuotePreparationServic
                     }
                 })
                 .onStatus(HttpStatusCode::is5xxServerError, (httpRequest, httpResponse) -> {
-                    log.error("External API returned 5xx [status={}]", httpResponse.getStatusCode());
+                    log.error("[QuotePreparation] External API returned 5xx [status={}]", httpResponse.getStatusCode());
                     throw new DXCQuotePraparationApiException(
                             "External policy API is currently unavailable",
                             httpResponse.getStatusCode().value());
                 })
                 .body(DXCQuotePreparationResponse.class);
 
-        log.info("Policy issued successfully: policyKey={}, policyNo={}",
+        // Log the response to DB
+        if (dbRequestId != null) {
+            logger.logResponse(jsonConverter.toJson(response), dbRequestId);
+        }
+
+        log.info("[QuotePreparation] Policy quote prepared: policyKey={}, policyNo={}",
                 response.getPolicyKey(), response.getPolicyNo());
         return response;
     }

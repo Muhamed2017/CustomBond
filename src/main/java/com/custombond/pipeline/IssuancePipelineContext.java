@@ -1,5 +1,6 @@
 package com.custombond.pipeline;
 
+import com.custombond.dto.request.NafezaIssuanceRequest;
 import com.custombond.dto.request.VendorIssuanceRequest;
 import com.custombond.dto.response.BlackListResponse;
 import lombok.Builder;
@@ -83,8 +84,27 @@ public class IssuancePipelineContext {
     /**
      * Full response body from the black-list check.
      * Available to subsequent steps if they need contact or stakeholder details.
+     * {@code contactKey} inside this response is used by {@code NafezaQuotePreparationStep}
+     * as the resolved {@code insured} value.
      */
     private BlackListResponse blackListResult;
+
+    /**
+     * DXC contact key resolved from the black-list check and used as the {@code insured}
+     * field in the NAFEZA quote preparation request.
+     * Written by {@code NafezaQuotePreparationStep}.
+     */
+    private Long resolvedInsured;
+
+    /**
+     * The original NAFEZA issuance request received by the controller.
+     * {@code null} for standard vendor flows; populated only when the NAFEZA
+     * endpoint ({@code POST /vendor/issue/nafeza}) is used.
+     * NAFEZA-specific steps ({@link PipelineStepType#NAFEZA_QUOTE_PREPARATION},
+     * {@link PipelineStepType#NAFEZA_UPLOAD_DOCUMENTS}) read their input from here
+     * rather than from {@link #request}.
+     */
+    private NafezaIssuanceRequest nafezaRequest;
 
     // -----------------------------------------------------------------------
     // Pipeline status
@@ -132,6 +152,9 @@ public class IssuancePipelineContext {
      * @return policy number, or {@code null} if neither source provided one
      */
     public String resolvedPolicyNo() {
-        return (policyNo != null) ? policyNo : request.getPolicyNo();
+        if (policyNo != null) return policyNo;
+        if (request != null && request.getPolicyNo() != null) return request.getPolicyNo();
+        if (nafezaRequest != null) return nafezaRequest.getPolicyNo();
+        return null;
     }
 }
